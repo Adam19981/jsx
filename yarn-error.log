@@ -1,0 +1,78 @@
+Arguments: 
+  C:\Program Files\nodejs\node.exe C:\Users\lumin\AppData\Roaming\npm\node_modules\yarn\bin\yarn.js
+
+PATH: 
+  C:\ProgramData\Oracle\Java\javapath;C:\w;E:\allure-2.13.8\bin;ndows\system32;C:\windows;C:\windows\System32\Wbem;C:\windows\System32\WindowsPowerShell\v1.0\;C:\windows\System32\OpenSSH\;C:\Program Files\NVIDIA Corporation\NVIDIA NvDLISR;C:\Program Files (x86)\NVIDIA Corporation\PhysX\Common;E:\n;de\;C:\Program Files (x86)\Windows Kits\8.1\Windows Performance Toolkit\;E:\yidong\2021_01_06\adt-bundle-windows-x86_64-20140702\sdk\platform-tools;E:\yidong\2021_01_06\adt-bundle-windows-x86_64-20140702\sdk\tools;E:\yidong\2021_01_06\adt-bundle-windows-x86_64-20140702\sdk\build-tools\android-4.4W;C:\Program Files\Java\jdk1.8.0_144\bin;E:\;C:\Program Files\nodejs\;E:\Git\cmd;E:\微信开发者工具\微信web开发者工具\dll;C:\Users\lumin\AppData\Local\Programs\Python\Python36\Scripts\;C:\Users\lumin\AppData\Local\Programs\Python\Python36\;C:\Users\lumin\AppData\Local\Microsoft\WindowsApps;E:\fiddler;E:\webstorm\WebStorm 2021.2.1\bin;;C:\Users\lumin\AppData\Local\Programs\Microsoft VS Code\bin;C:\Users\lumin\AppData\Roaming\npm;C\Program Files\Common Files\IntelWirelessCommon;C:\windows\system32;C:\windows;C:\windows\System32\Wbem;C:\windows\System32\WindowsPowerShell\v1.0\;C:\windows\System32\OpenSSH\;C\Program Files (x86)]Intel\Intel® Processor Graphics;;E:\vue-manage\node_modules\.bin
+
+Yarn version: 
+  1.22.18
+
+Node version: 
+  16.13.1
+
+Platform: 
+  win32 x64
+
+Trace: 
+  Error: EBUSY: resource busy or locked, unlink 'E:\vue-manage\node_modules\qs\package.json'
+
+npm manifest: 
+  {
+    "name": "vue-manage",
+    "version": "0.1.0",
+    "private": true,
+    "scripts": {
+      "serve": "vue-cli-service serve",
+      "build": "vue-cli-service build",
+      "lint": "vue-cli-service lint"
+    },
+    "dependencies": {
+      "@amap/amap-jsapi-loader": "^1.0.1",
+      "axios": "^0.26.0",
+      "core-js": "^3.6.5",
+      "echarts": "^5.1.2",
+      "element-ui": "^2.15.6",
+      "js-cookie": "^3.0.1",
+      "less": "^2.3.1",
+      "less-loader": "^5.0.0",
+      "mockjs": "^1.1.0",
+      "vue": "^2.6.11",
+      "vue-amap": "^0.5.10",
+      "vue-router": "^3.5.3",
+      "vuex": "^3.0.1"
+    },
+    "devDependencies": {
+      "@vue/cli-plugin-babel": "~4.5.15",
+      "@vue/cli-plugin-eslint": "~4.5.15",
+      "@vue/cli-service": "~4.5.15",
+      "babel-eslint": "^10.1.0",
+      "eslint": "^6.7.2",
+      "eslint-plugin-vue": "^6.2.2",
+      "vue-template-compiler": "^2.6.11"
+    },
+    "eslintConfig": {
+      "root": true,
+      "env": {
+        "node": true
+      },
+      "extends": [
+        "plugin:vue/essential",
+        "eslint:recommended"
+      ],
+      "parserOptions": {
+        "parser": "babel-eslint"
+      },
+      "rules": {}
+    },
+    "browserslist": [
+      "> 1%",
+      "last 2 versions",
+      "not dead"
+    ]
+  }
+
+yarn manifest: 
+  No manifest
+
+Lockfile: 
+  No lockfile
