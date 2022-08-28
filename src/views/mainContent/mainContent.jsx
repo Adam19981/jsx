@@ -8,8 +8,8 @@ const mainContent = {
 
     render() {
         return (
-            <el-container style={{width:'100%',height:'100vh'}}>
-                <el-aside style={{width:'200px',height:'100%'}}>
+            <el-container width={'auto'} style={{height:'100vh'}}>
+                <el-aside width={'200px'}>
                     <otherSide/>
                 </el-aside>
                 <el-container>

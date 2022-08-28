@@ -13,7 +13,7 @@ export default {
                             component: 'mainContent',
                             isShowChildren:false,
                             meta: {
-                                title: '工作台', icon: 'el-icon-s-shop',
+                                title: '工作台', icon: 'el-icon-s-home',
                             },
                             children: [
                                 {

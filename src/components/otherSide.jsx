@@ -23,24 +23,23 @@ const otherSide = {
     },
     render() {
         return (
-            <el-menu defaultActive="1-4-1"
+            <el-menu
                      backgroundColor='#545c64'
-                     style={{height:'100%',width:'100%',textAlign:'center'}}
+                     style={{height:'100%',textAlign:'center'}}
                      textColor='#fff' activeTextColor='#ffd04b'
                      collapse={this.isCollapse}>
                 <h3 class={otherSideStyle.title}>{this.isCollapse ? '后台' : '通用后台管理系统'}</h3>
                 {this.getMenu.map(item => {
                     if (item.isShowChildren) {
-                        return <el-submenu  index={item.path} style={{textAlign:'left'}}
-                        >
-                            <div slot={'title'}>
-                                <span class={item.meta.icon}/>
-                                <span>{item.meta.title}</span></div>
-
+                        return <el-submenu  index={item.path} style={{textAlign:'left'}}>
+                            <template slot={'title'}>
+                                <i class={item.meta.icon}/>
+                                <span>{item.meta.title}</span>
+                            </template>
 
                             {item.children.map(ite => {
                                 return <el-menu-item-group>
-                                    <el-menu-item   onClick={() => {
+                                    <el-menu-item index={ite.path}   onClick={() => {
                                         this.clickMenu(ite)
                                     }
 
@@ -49,14 +48,10 @@ const otherSide = {
                             })}
                         </el-submenu>
                     } else {
-                        return <el-menu-item style={{textAlign:'left'}}  onClick={() => {
-                            this.clickMenu(item)
-                        }
-                        }>
-                            <div slot={'title'}>
-                                <i class={item.meta.icon}/>
-                                <span>{item.meta.title}</span>
-                            </div>
+                        return <el-menu-item style={{textAlign:'left'}} index={item.path}   onClick={() => {
+                            this.clickMenu(item)}}>
+                            <i class={item.meta.icon}/>
+                            <span>{item.meta.title}</span>
                         </el-menu-item>
                     }
                 })}
