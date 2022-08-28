@@ -8,25 +8,44 @@ export default {
                     menu: [
                         {
                             path: '/',
-                            name: 'frontPage',
-                            component: 'frontPage/frontPage.vue',
-                            redirect: '/workbench',
-                            showChildren:false,
-                            mate:{
-                                title:'工作台',icon:'el-icon-s-shop'
+                            name: 'workbench',
+                            redirect: '/workbench/info',
+                            component: 'mainContent',
+                            isShowChildren:false,
+                            meta: {
+                                title: '工作台', icon: 'el-icon-s-shop',
                             },
                             children: [
                                 {
-                                    path: '/workbench',
-                                    name: 'workbench',
+                                    path: '/workbench/info',
+                                    name: 'workbenchInfo',
                                     component: 'workbench/workbench.vue',
-                                    mate:{
-                                        title:'工作台'
+                                    meta: {
+                                        title: '工作台',
                                     }
                                 }
                             ]
                         },
-
+                        {
+                            path: '/qwe',
+                            name: 'qwe',
+                            redirect: 'qwe/info',
+                            component: 'qwe',
+                            isShowChildren:true,
+                            meta: {
+                                title: 'qwe', icon: 'el-icon-s-shop',
+                            },
+                            children: [
+                                {
+                                    path: '/qwe/info',
+                                    name: 'qweInfo',
+                                    component: 'qwe/qwe.vue',
+                                    meta: {
+                                        title: 'qwe',
+                                    }
+                                }
+                            ]
+                        },
                     ],
                     token: 'admin',
                     message: '获取成功'
@@ -39,26 +58,44 @@ export default {
                 data: {
                     menu: [
                         {
-                            path: '/',
-                            name: 'frontPage',
-                            redirect: '/workbench',
-                            component: 'frontPage/frontPage.vue',
-                            showChildren:false,
-                            mate:{
-                                title:'工作台',icon:'el-icon-s-shop'
+                            path: '/workbench',
+                            name: 'workbench',
+                            redirect: 'workbench/info',
+                            component: 'mainContent',
+                            meta: {
+                                title: '工作台', icon: 'el-icon-s-shop',
                             },
                             children: [
                                 {
-                                    path: '/workbench',
-                                    name: 'workbench',
-                                    component: 'workbench/workbench',
-                                    mate:{
-                                        title:'工作台'
+                                    path: '/workbench/info',
+                                    name: 'workbenchInfo',
+                                    component: 'workbench/workbench.vue',
+                                    meta: {
+                                        title: '工作台',
                                     }
                                 }
                             ]
-                        }
-                     ],
+                        },
+                        {
+                            path: '/qwe',
+                            name: 'qwe',
+                            redirect: 'qwe/info',
+                            component: 'qwe',
+                            meta: {
+                                title: 'qwe', icon: 'el-icon-s-shop',
+                            },
+                            children: [
+                                {
+                                    path: '/qwe/info',
+                                    name: 'qweInfo',
+                                    component: 'qwe/qwe.vue',
+                                    meta: {
+                                        title: 'qwe',
+                                    }
+                                }
+                            ]
+                        },
+                    ],
                     token: 'user',
                     message: '获取成功'
                 }

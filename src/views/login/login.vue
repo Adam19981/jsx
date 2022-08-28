@@ -32,7 +32,7 @@ export default {
           console.log(valid)
           if (valid){
             localStorage.setItem('token',this.form.userId)
-            this.$router.push({ path:'/' })
+            this.$router.push({ path:'/workbench' })
           }else {
             console.log('false')
           }

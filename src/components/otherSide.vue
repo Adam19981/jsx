@@ -6,17 +6,17 @@
            :collapse="isCollapse">
     <h3>{{ isCollapse ? '后台' : '通用后台管理系统' }}</h3>
     <el-menu-item @click="clickMenu(item)" v-for="item in noChildren" :index="item.path+''" :key="item.path">
-      <i :class="item.mate.icon"></i>
-      <span slot="title">{{ item.mate.title }}</span>
+      <i :class="item.meta.icon"></i>
+      <span slot="title">{{ item.meta.title }}</span>
     </el-menu-item>
     <el-submenu v-for="item in haveChildren" :index="item.path+''" :key="item.path">
       <template slot="title">
-        <i :class="item.mate.icon"></i>
-        <span slot="title">{{ item.mate.title }}</span>
+        <i :class="item.meta.icon"></i>
+        <span slot="title">{{ item.meta.title }}</span>
       </template>
 
       <el-menu-item-group v-for="(ite,inx) in item.children" :key="ite.path">
-        <el-menu-item @click="clickMenu(ite)" :index="inx+''">{{ ite.mate.title }}</el-menu-item>
+        <el-menu-item @click="clickMenu(ite)" :index="inx+''">{{ ite.meta.title }}</el-menu-item>
       </el-menu-item-group>
 
     </el-submenu>
@@ -42,8 +42,7 @@ export default {
     }
   },
   mounted() {
-    console.log(this.noChildren)
-    console.log(this.haveChildren)
+
   },
   computed: {
     getMenu() {

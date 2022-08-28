@@ -2,6 +2,8 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import {getMenu} from "../api/frontPage";
 import filterASyncRoutes from "../router/kineticRouter";
+
+
 Vue.use(Vuex)
 const state = {
     breadcrumbList: [],
@@ -47,7 +49,8 @@ const actions = {
         return new Promise(  (resolve)=>{
             const req = {userId:userId}
             getMenu(req).then(response=>{
-                const { data } =response
+                const { data } = response
+                console.log(data.data.menu)
                 commit('setMenu',data.data.menu)
                 resolve(response)
             })

@@ -7,11 +7,11 @@
         </el-breadcrumb>
     </div>
     <div class="r-content">
-        <el-dropdown trigger="click" szie="mini">
-            <el-dropdown-menu slot="dropdown">
-               <el-dropdown-item @click.native="logout">安全退出</el-dropdown-item>
-             </el-dropdown-menu>
-        </el-dropdown>
+<!--        <el-dropdown trigger="click" szie="mini">-->
+<!--            <el-dropdown-menu slot="dropdown">-->
+<!--               <el-dropdown-item @click.native="logout">安全退出</el-dropdown-item>-->
+<!--             </el-dropdown-menu>-->
+<!--        </el-dropdown>-->
     </div>
 </header>
 </template>
