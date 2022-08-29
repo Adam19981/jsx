@@ -68,7 +68,8 @@ export default {
   height: 100%;
   background-color: black;
   background-image: url("~@/assets/login/loginBg.jpg");
-  background-size: 100%;
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
 
   .loginUser {
     position: absolute;
