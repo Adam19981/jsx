@@ -1,11 +1,7 @@
 <template>
   <div class="loginMain">
 
-<!--    <transition name="el-fade-in">-->
-      <i v-if="isShowUserImg" class="loginUser el-icon-s-custom" @click="handleShowForm">
-      </i>
-<!--    </transition>-->
-
+    <i v-if="isShowUserImg" class="loginUser el-icon-s-custom" @click="handleShowForm" />
 
     <transition name="el-zoom-in-center">
       <div class="loginForm" v-if="!isShowUserImg">
@@ -21,8 +17,6 @@
         </el-form>
       </div>
     </transition>
-
-
 
   </div>
 </template>
