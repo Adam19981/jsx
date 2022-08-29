@@ -1,60 +1,146 @@
 <template>
-<div class="loginMain">
-    <el-form  :model="form"  :rules='rules' ref='form' label-width="100px" class="logins">
-     <h3 class="login_title">系统登录</h3>
-     <el-form-item label='用户' label-width="80" prop="userId">
-        <el-input type="input" v-model="form.userId" clearable  placeholder="请输入用戶名"></el-input>
-     </el-form-item>
-     <el-form-item>
-        <el-button type="primary" @click="handleLogin">登录</el-button>
-     </el-form-item>
-</el-form>
-</div>
+  <div class="loginMain">
+
+<!--    <transition name="el-fade-in">-->
+      <i v-if="isShowUserImg" class="loginUser el-icon-s-custom" @click="handleShowForm">
+      </i>
+<!--    </transition>-->
+
+
+    <transition name="el-zoom-in-center">
+      <div class="loginForm" v-if="!isShowUserImg">
+        <h1>Log In</h1>
+        <i class="formClose el-icon-circle-close" @click="handleShowForm"></i>
+        <el-form :model="form" :rules='rules' ref='form'>
+          <el-form-item prop="userId">
+            <el-input type="input" v-model="form.userId" clearable placeholder="请输入用戶名"></el-input>
+          </el-form-item>
+          <el-form-item>
+            <el-button class="loginBtn" @click="handleLogin">Log in</el-button>
+          </el-form-item>
+        </el-form>
+      </div>
+    </transition>
+
+
+
+  </div>
 </template>
 
 <script>
 
 export default {
-    name:'login',
-    data() {
-        return {
-            form:{
-              userId:'',
-            },
-            rules:{
-              userId:[{required:true,message:'请输入用户名',trigger:'blur'}]
-            }
-        }
-    },
-    methods:{
-      handleLogin(){
-        this.$refs['form'].validate((valid)=>{
-          console.log(valid)
-          if (valid){
-            localStorage.setItem('token',this.form.userId)
-            this.$router.push({ path:'/workbench' })
-          }else {
-            console.log('false')
-          }
-        })
-        }
+  name: 'login',
+  data() {
+    return {
+      form: {
+        userId: '',
+      },
+      rules: {
+        userId: [{required: true, message: '请输入用户名', trigger: 'blur'}]
+      },
+      isShowUserImg: true
     }
+  },
+  methods: {
+    handleLogin() {
+      this.$refs['form'].validate((valid) => {
+        console.log(valid)
+        if (valid) {
+          localStorage.setItem('token', this.form.userId)
+          this.$router.push({path: '/workbench'})
+        } else {
+          console.log('false')
+        }
+      })
+    },
+    handleShowForm() {
+      this.isShowUserImg =!this.isShowUserImg
+    }
+  }
 }
 </script>
 
-<style>
-.logins{
-    border-radius: 15px;
-    background-clip: padding-box;
-    width: 300px;
-    border:1px solid #DCDFE6;
-    margin:100px auto;
-    padding: 10px 0 10px 20px;
+<style scoped lang="less">
+.loginMain {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background-color: black;
+  background-image: url("~@/assets/login/loginBg.jpg");
+  background-size: 100%;
+
+  .loginUser {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-top: -50px;
+    margin-left: -50px;
+    width: 100px;
+    height: 100px;
+    border-radius: 100px;
+    background-color: rgba(0, 0, 0, 0.12);
+    box-shadow: 0 0 4px rgba(0, 0, 0, 0.12);
+    font-size: 50px;
+    text-align: center;
+    line-height: 90px;
+    cursor: pointer;
+    color: rgba(0, 0, 0, 0.3);
+  }
+
+  /deep/ .el-input__inner {
+    background-color: rgba(0, 0, 0, 0.12);
+    border: none;
+    color: #fff;
+  }
+
+  /deep/ .el-form-item__error {
+    color: #eee;
+
+  }
+
+  .loginForm {
+    position: absolute;
+    padding: 20px;
+    width: 280px;
+    height: 250px;
+    margin-left: -140px;
+    margin-top: -125px;
+    top: 50%;
+    left: 50%;
+    background-color: rgba(3, 3, 3, 0.25);
+    box-shadow: 1px 1px 50px #000;
+    border-radius: 4px;
+
+    .formClose{
+      position: absolute;
+      top:5px;
+      right: 5px;
+      cursor: pointer;
+      font-size: 24px;
+      color: rgba(3, 3, 3, 0.6);
+    }
+
+    h1 {
+      font-family: 'Open Sans Condensed', sans-serif;
+      position: relative;
+      margin-top: 0;
+      text-align: center;
+      font-size: 40px;
+      color: #ddd;
+      text-shadow: 3px 3px 10px #000;
+    }
+
+
+    .loginBtn {
+      width: 80%;
+      background-color: rgba(3, 3, 3, 0.5);
+      border: none;
+      color: #fff;
+      margin-left: 10%;
+    }
+
+  }
 }
-.el-input{
-    width: 200px;
-}
-.login_title{
-    margin-left: 100px;
-}
+
 </style>
