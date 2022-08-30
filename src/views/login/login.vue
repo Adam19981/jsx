@@ -22,7 +22,13 @@
 </template>
 
 <script>
-
+const changeUserId = (rule, value, callback) => {
+  if (value!=='user'&&value!=='admin') {
+    return callback(new Error('账号不存在'));
+  }else{
+    callback()
+  }
+}
 export default {
   name: 'login',
   data() {
@@ -31,7 +37,8 @@ export default {
         userId: '',
       },
       rules: {
-        userId: [{required: true, message: '请输入用户名', trigger: 'blur'}]
+        userId: [{required: true, message: '请输入用户名', trigger: 'blur'},
+          { validator: changeUserId, trigger: 'blur' }]
       },
       isShowUserImg: true
     }
@@ -42,7 +49,7 @@ export default {
         console.log(valid)
         if (valid) {
           localStorage.setItem('token', this.form.userId)
-          this.$router.push({path: '/workbench'})
+          this.$router.push({path: '/'})
         } else {
           console.log('false')
         }
@@ -89,6 +96,10 @@ export default {
     color: #fff;
   }
 
+  /deep/ .el-input__inner:hover{
+    box-shadow: 0 0 4px rgba(0, 0, 0, 1);
+  }
+
   /deep/ .el-form-item__error {
     color: #eee;
 
@@ -115,6 +126,10 @@ export default {
       font-size: 24px;
       color: rgba(3, 3, 3, 0.6);
     }
+    .formClose:hover{
+      color:#000
+    }
+
 
     h1 {
       font-family: 'Open Sans Condensed', sans-serif;
@@ -131,9 +146,15 @@ export default {
       width: 80%;
       background-color: rgba(3, 3, 3, 0.5);
       border: none;
-      color: #fff;
+      color: #eee;
       margin-left: 10%;
     }
+    .loginBtn:hover{
+      box-shadow: 0 0 4px rgba(0, 0, 0, 1);
+      font-weight: 700;
+      color: white;
+    }
+
 
   }
 }
