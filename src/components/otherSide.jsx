@@ -24,8 +24,8 @@ const otherSide = {
     render() {
         return (
             <el-menu
-                     backgroundColor='#545c64'
                      style={{height:'100%',textAlign:'center'}}
+                     class={otherSideStyle.menuDiv}
                      textColor='#fff' activeTextColor='#ffd04b'
                      collapse={this.isCollapse}>
                 <h3 class={otherSideStyle.title}>{this.isCollapse ? '后台' : '通用后台管理系统'}</h3>

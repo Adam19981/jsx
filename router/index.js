@@ -28,14 +28,14 @@ const router =  new VueRouter({
 router.beforeEach(async (to, form, next) => {
     console.log(to)
     const token =  localStorage.getItem('token')
-    if (token){
+    const timestamp = parseInt(localStorage.getItem('timestamp')) //登录时存的时间戳
+    const nowTimeStamp  =new Date().getTime() //当前时间戳
+    if (token&&nowTimeStamp<timestamp){
         if (!store.state.menu.length){
             await store.dispatch('getUserRouter',token)
-            console.log(store.state.menu)
             store.state.menu.forEach(item=>{
                 router.addRoute({...item})
             })
-            console.log(router)
             next({...to, replace: true })
         }else{
             next()

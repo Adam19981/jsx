@@ -1,6 +1,30 @@
-.title{
+.title {
   color: #fff;
   font-size: 18px;
-  padding:0 28px
+  padding: 0 40px
+}
+
+.menuDiv {
+  background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.9)), url("~@/assets/mainContent/otherSide.jpg") no-repeat;
+  background-size: cover;
+}
+
+:global(.el-menu){
+  background-color: rgb(255, 255, 255, 0.1);
+}
+:global(.el-submenu__title:hover) {
+  background-color: rgb(255, 255, 255, 0.1);
+}
+
+:global(.el-submenu__title:focus) {
+  background-color: rgb(255, 255, 255, 0.1);
+}
+
+:global(.el-menu-item:hover) {
+  background-color: rgb(255, 255, 255, 0.1);
+}
+
+:global(.el-menu-item:focus) {
+  background-color: rgb(255, 255, 255, 0.1);
 }
 

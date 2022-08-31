@@ -48,6 +48,8 @@ export default {
       this.$refs['form'].validate((valid) => {
         console.log(valid)
         if (valid) {
+          const timestamp = new Date().getTime()+60*60*24*1000
+          localStorage.setItem('timestamp',timestamp+'')
           localStorage.setItem('token', this.form.userId)
           this.$router.push({path: '/'})
         } else {
