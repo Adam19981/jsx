@@ -24,7 +24,7 @@ const otherSide = {
     render() {
         return (
             <el-menu
-                     style={{height:'100%',textAlign:'center'}}
+                     style={{height:'100%',textAlign:'center',width:'200px'}}
                      class={otherSideStyle.menuDiv}
                      textColor='#fff' activeTextColor='#ffd04b'
                      collapse={this.isCollapse}>

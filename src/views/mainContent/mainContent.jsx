@@ -10,7 +10,7 @@ const mainContent = {
         return (
             <el-container  style={{height:'100vh'}}>
                 <el-aside width='auto'>
-                    <otherSide/>
+                    <otherSide  />
                 </el-aside>
                 <el-container>
                     <el-header>
