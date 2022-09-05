@@ -21,6 +21,7 @@ export default {
   name: 'echartsMap',
   data() {
     return {
+
       centerList: [
         {name: '案发情况', isSelect: true},
         {name: '满意度情况', isSelect: false},
@@ -89,7 +90,7 @@ export default {
     drawEcharts(status) {
       let splitList
       let showDataRange
-      switch (splitList) {
+      switch (status) {
         case '案发情况':
           showDataRange = true
           splitList = [
@@ -100,7 +101,7 @@ export default {
           ]
           break
         case '满意度情况':
-          showDataRange = true
+          showDataRange = false
           splitList = [
             {start: 0, end: 60, label: '不满意 （<60%）', color: 'rgba(255, 92, 69, 0.24)'},
             {start: 60, end: 80, label: '较为满意 （80%>60%）', color: 'rgba(245, 229, 102, 0.24)'},
@@ -199,7 +200,20 @@ export default {
           {
             type: 'map',
             mapType: 'wz', //
-            data: ['景山街道', '娄桥街道', '仙岩街道', '郭溪街道', '新桥街道', '梧田街道', '潘桥街道', '丽岙街道', '南白象街道', '瞿溪街道', '茶山街道', '泽雅镇', '三垟街道'],
+            data: [
+              {name: '景山街道', value: 1},
+              {name: '娄桥街道', value: 20},
+              {name: '仙岩街道', value: 100},
+              {name: '郭溪街道', value: 120},
+              {name: '新桥街道', value: 2},
+              {name: '梧田街道', value: 50},
+              {name: '潘桥街道', value: 30},
+              {name: '丽岙街道', value: 70},
+              {name: '南白象街道', value: 200},
+              {name: '瞿溪街道', value: 1},
+              {name: '茶山街道', value: 600},
+              {name: '泽雅镇', value: 3},
+              {name: '三垟街道', value: 10}],
             label: {
               show: true,
               textStyle: {
@@ -254,6 +268,7 @@ export default {
         this.chart.setOption(options, true)
         // renderEachCity(this, date) // 柱状图嵌入方法
       } else {
+        console.log(showDataRange)
         options['dataRange'] = {
           show: showDataRange,
           x: '10px',
