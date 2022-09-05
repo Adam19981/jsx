@@ -27,24 +27,12 @@ export default {
                             ]
                         },
                         {
-                            path: '/qwe',
-                            name: 'qwe',
-                            redirect: 'qwe/info',
-                            component: 'qwe',
-                            isShowChildren:true,
+                            path: '/visualization',
+                            name: 'visualization',
+                            component: 'visualization/visualization.vue',
                             meta: {
-                                title: 'qwe', icon: 'el-icon-s-shop',
+                                title: '数据可视化', icon: 'el-icon-data-line',
                             },
-                            children: [
-                                {
-                                    path: '/qwe/info',
-                                    name: 'qweInfo',
-                                    component: 'qwe/qwe.vue',
-                                    meta: {
-                                        title: 'qwe',
-                                    }
-                                }
-                            ]
                         },
                     ],
                     token: 'admin',
@@ -77,23 +65,12 @@ export default {
                             ]
                         },
                         {
-                            path: '/qwe',
-                            name: 'qwe',
-                            redirect: 'qwe/info',
-                            component: 'qwe',
+                            path: '/visualization',
+                            name: 'visualization',
+                            component: 'visualization/visualization.vue',
                             meta: {
-                                title: 'qwe', icon: 'el-icon-s-shop',
+                                title: '数据可视化', icon: 'el-icon-data-line',
                             },
-                            children: [
-                                {
-                                    path: '/qwe/info',
-                                    name: 'qweInfo',
-                                    component: 'qwe/qwe.vue',
-                                    meta: {
-                                        title: 'qwe',
-                                    }
-                                }
-                            ]
                         },
                     ],
                     token: 'user',

@@ -1,7 +1,7 @@
 <template>
   <header>
     <div class="l-content">
-      <el-button @click="changeIsCollapse" plain icon='el-icon-menu' size="mini"></el-button>
+      <el-button @click="changeIsCollapse"  icon='el-icon-menu' size="mini"></el-button>
       <el-breadcrumb separator-class="el-icon-arrow-right">
         <el-breadcrumb-item v-for='item in tags' :key='item.name' :to="{ path: item.path }">{{ item.label }}
         </el-breadcrumb-item>
@@ -10,7 +10,7 @@
     <div class="r-content">
       <el-dropdown trigger="click" szie="mini">
             <span class="el-dropdown-link">
-              admin
+              {{userName}}
               <i class="el-icon-arrow-down el-icon--right"></i>
             </span>
         <el-dropdown-menu slot="dropdown">
@@ -26,6 +26,11 @@ import {mapState} from 'vuex'
 
 export default {
   name: 'menuHeader',
+  data(){
+    return{
+     userName:localStorage.getItem('token')
+    }
+  },
   methods: {
     changeIsCollapse() {
       this.$store.commit('changeIsCollapse')

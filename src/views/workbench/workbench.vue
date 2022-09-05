@@ -1,15 +1,16 @@
 <template>
   <div>
-    测试
+    <universalMap></universalMap>
   </div>
 
 </template>
 
 <script>
 
-
+import universalMap from "@/components/map/universalMap.vue";
 export default {
   name:'workbench',
+  components:{universalMap},
   data() {
     return {
 

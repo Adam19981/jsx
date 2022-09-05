@@ -26,7 +26,7 @@ const otherSide = {
             <el-menu
                      style={{height:'100%',textAlign:'center',width:'200px'}}
                      class={otherSideStyle.menuDiv}
-                     textColor='#fff' activeTextColor='#ffd04b'
+                     textColor='#fff' activeTextColor='#6495ED'
                      collapse={this.isCollapse}>
                 <h3 class={otherSideStyle.title}>{this.isCollapse ? '后台' : '通用后台管理系统'}</h3>
                 {this.getMenu.map(item => {

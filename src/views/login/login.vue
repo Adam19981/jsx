@@ -7,7 +7,7 @@
       <div class="loginForm" v-if="!isShowUserImg">
         <h1>Log In</h1>
         <i class="formClose el-icon-circle-close" @click="handleShowForm"></i>
-        <el-form :model="form" :rules='rules' ref='form'>
+        <el-form :model="form" :rules='rules' ref='form' @submit.prevent.native>
           <el-form-item prop="userId">
             <el-input type="input" v-model="form.userId" clearable placeholder="请输入用戶名"></el-input>
           </el-form-item>
@@ -29,6 +29,7 @@ const changeUserId = (rule, value, callback) => {
     callback()
   }
 }
+
 export default {
   name: 'login',
   data() {
@@ -43,6 +44,7 @@ export default {
       isShowUserImg: true
     }
   },
+
   methods: {
     handleLogin() {
       this.$refs['form'].validate((valid) => {
