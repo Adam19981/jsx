@@ -1,14 +1,18 @@
 <template>
   <div class="visualizationMain">
-    <echartsMap></echartsMap>
+    <div ref="appRef" class="visualizationMain-content">
+<!--      <echartsMap></echartsMap>-->
+    </div>
   </div>
 </template>
 
 <script>
-import echartsMap from './echartsMap/index'
+// import echartsMap from './echartsMap/index'
+import Mixin from '@/publicMethod/drawMixin'
 export default {
   name: "visualization",
-  components:{echartsMap}
+  mixins:[Mixin],
+  // components:{echartsMap}
 }
 </script>
 
@@ -17,5 +21,12 @@ export default {
   width: 100%;
   height: 100%;
   background-color: black;
+
+  .visualizationMain-content{
+    width: 100%;
+    height: 100%;
+    background-color: white;
+  }
+
 }
 </style>

@@ -16,7 +16,20 @@
 
 <script>
 import mapData from './mapData.json'
-
+import renderEachCity from "./echartsMapMethod";
+const cityList = [     {street_name: '景山街道', value: 1},
+  {street_name: '娄桥街道', value: 20},
+  {street_name: '仙岩街道', value: 100},
+  {street_name: '郭溪街道', value: 120},
+  {street_name: '新桥街道', value: 2},
+  {street_name: '梧田街道', value: 50},
+  {street_name: '潘桥街道', value: 30},
+  {street_name: '丽岙街道', value: 70},
+  {street_name: '南白象街道', value: 200},
+  {street_name: '瞿溪街道', value: 1},
+  {street_name: '茶山街道', value: 600},
+  {street_name: '泽雅镇', value: 3},
+  {street_name: '三垟街道', value: 10}]
 export default {
   name: 'echartsMap',
   data() {
@@ -266,7 +279,7 @@ export default {
         options.geo[0].itemStyle.normal.borderColor = 'rgba(134, 253, 250, 0.32)'
         options.series = []
         this.chart.setOption(options, true)
-        // renderEachCity(this, date) // 柱状图嵌入方法
+        renderEachCity(this,cityList) // 柱状图嵌入方法
       } else {
         console.log(showDataRange)
         options['dataRange'] = {
