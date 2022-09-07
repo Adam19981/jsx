@@ -35,6 +35,7 @@ export default {
             const currentRate = parseFloat((window.innerWidth / window.innerHeight).toFixed(5))
             if (appRef) {
                 if (currentRate > baseProportion) {
+                    console.log(1)
                     // 表示更宽
                     scale.width = ((window.innerHeight * baseProportion) / baseWidth).toFixed(5)
                     scale.height = (window.innerHeight / baseHeight).toFixed(5)
