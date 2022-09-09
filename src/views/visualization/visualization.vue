@@ -11,6 +11,11 @@ import echartsMap from './echartsMap/index'
 export default {
   name: "visualization",
   components:{echartsMap},
+  data(){
+    return{
+      timer:null
+    }
+  },
   mounted() {
     this.resize()
     window.addEventListener('resize', this.resize)
@@ -22,7 +27,13 @@ export default {
       return ww < wh ? ww : wh;
     },
     resize(){
-      this.$refs.appRef.style.transform = `scale(${this.getScale()}) translate(-50%, -50%)`;
+      if (this.timer){
+        clearTimeout(this.timer)
+      }
+      setTimeout(()=>{
+        this.$refs.appRef.style.transform = `scale(${this.getScale()}) translate(-50%, -50%)`;
+      },200)
+
     }
   },
   beforeDestroy () {
@@ -36,6 +47,7 @@ export default {
   width: 100%;
   height: 100%;
   overflow: hidden;
+  position: relative;
   background-color: black;
 
   &-content{
