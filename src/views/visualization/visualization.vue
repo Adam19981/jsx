@@ -1,7 +1,8 @@
 <template>
   <div class="visualizationMain">
     <div ref="appRef" class="visualizationMain-content">
-      <echartsMap class="visualizationMain-content-map"></echartsMap>
+      <dv-loading v-if="loading">Loading...</dv-loading>
+      <echartsMap v-else class="visualizationMain-content-map"></echartsMap>
     </div>
   </div>
 </template>
@@ -13,12 +14,16 @@ export default {
   components:{echartsMap},
   data(){
     return{
-      timer:null
+      timer:null,
+      loading:true
     }
   },
   mounted() {
     this.resize()
     window.addEventListener('resize', this.resize)
+    setTimeout(()=>{
+      this.loading = false
+    },1000)
   },
   methods:{
     getScale(){
@@ -57,8 +62,10 @@ export default {
     top: 50%;
     left: 50%;
     transition: all 0.5s;
+    transform: scale(1) translate(-50%, -50%);
     transform-origin: left top;
-    background:url("~@/assets/login/loginBg.jpg") no-repeat 100% 100%;
+    background:url("~@/assets/visualization/background.webp") no-repeat;
+    background-size: 100% 100%;
 
     &-map{
       position: absolute;

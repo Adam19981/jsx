@@ -99,10 +99,8 @@ export default {
 
     drawEcharts(status) {
       let splitList
-      let showDataRange
       switch (status) {
         case '满意度情况':
-          showDataRange = false
           splitList = [
             {start: 0, end: 60, label: '不满意 （<60%）', color: 'rgba(255, 92, 69,1)'},
             {start: 60, end: 80, label: '较为满意 （80%>60%）', color: 'rgba(245, 229, 102,1)'},
@@ -246,9 +244,8 @@ export default {
         this.chart.setOption(options, true)
         renderEachCity(this, cityList) // 柱状图嵌入方法
       } else {
-        console.log(showDataRange)
         options['dataRange'] = {
-          show: showDataRange,
+          show: true,
           x: '10px',
           y: 'bottom',
           splitList: splitList,
