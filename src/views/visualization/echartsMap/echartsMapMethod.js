@@ -1,13 +1,27 @@
 // 在地图上嵌入柱状图
+const cityList = [{street_name: '景山街道', value: 1},
+    {street_name: '娄桥街道', value: 20},
+    {street_name: '仙岩街道', value: 100},
+    {street_name: '郭溪街道', value: 120},
+    {street_name: '新桥街道', value: 2},
+    {street_name: '梧田街道', value: 50},
+    {street_name: '潘桥街道', value: 30},
+    {street_name: '丽岙街道', value: 70},
+    {street_name: '南白象街道', value: 200},
+    {street_name: '瞿溪街道', value: 1},
+    {street_name: '茶山街道', value: 600},
+    {street_name: '泽雅镇', value: 3},
+    {street_name: '三垟街道', value: 10}]
 
-export default function renderEachCity(that, rawData) {
+
+export default function renderEachCity(that) {
     const optionColumn = {
         xAxis: [],
         yAxis: [],
         grid: [],
         series: []
     }
-    that.$echarts.util.each(rawData, (dataItem, idx) => {
+    that.$echarts.util.each(cityList, (dataItem, idx) => {
         if (dataItem.street_name !== '经济开发区') {
             // const inflationData = [dataItem.handle_cnt, dataItem.finish_handle_cnt]
             const inflationData = [10, 30]

@@ -19,19 +19,7 @@ import mapData from './mapData.json'
 import mapWenZhou from './mapWenZhou.json'
 import renderEachCity from "./echartsMapMethod";
 
-const cityList = [{street_name: '景山街道', value: 1},
-  {street_name: '娄桥街道', value: 20},
-  {street_name: '仙岩街道', value: 100},
-  {street_name: '郭溪街道', value: 120},
-  {street_name: '新桥街道', value: 2},
-  {street_name: '梧田街道', value: 50},
-  {street_name: '潘桥街道', value: 30},
-  {street_name: '丽岙街道', value: 70},
-  {street_name: '南白象街道', value: 200},
-  {street_name: '瞿溪街道', value: 1},
-  {street_name: '茶山街道', value: 600},
-  {street_name: '泽雅镇', value: 3},
-  {street_name: '三垟街道', value: 10}]
+
 export default {
   name: 'echartsMap',
   data() {
@@ -44,22 +32,23 @@ export default {
       options: {},
       chart: '',
       isToday: false,
+      timer: null,
       centerName: '满意度情况',
-      geoCordMap: {
-        '景山街道': [120.6271, 28.0075],
-        '娄桥街道': [120.6098, 27.9573],
-        '仙岩街道': [120.6776, 27.8843],
-        '郭溪街道': [120.5437, 28.0162],
-        '新桥街道': [120.6280, 27.9895],
-        '梧田街道': [120.6570, 27.9721],
-        '潘桥街道': [120.5588, 27.9380],
-        '丽岙街道': [120.6313, 27.9052],
-        '南白象街道': [120.6764, 27.9406],
-        '瞿溪街道': [120.5097, 27.9838],
-        '茶山街道': [120.7150, 27.9201],
-        '泽雅镇': [120.4138, 28.0205],
-        '三垟街道': [120.7073, 27.9638]
-      }
+      dataValue: [
+        {name: '永嘉县', value: 1},
+        {name: '乐清市', value: 20},
+        {name: '鹿城区', value: 100},
+        {name: '瓯海区', value: 120},
+        {name: '龙湾区', value: 2},
+        {name: '洞头区', value: 50},
+        {name: '瑞安市', value: 30},
+        {name: '文成县', value: 70},
+        {name: '平阳县', value: 200},
+        {name: '龙港市', value: 1},
+        {name: '泰顺县', value: 200},
+        {name: '苍南县', value: 1},
+      ]
+
     }
   },
 
@@ -67,28 +56,16 @@ export default {
     window.addEventListener('resize', this.chartResize)
     setTimeout(() => {
       this.initChart()
-      this.getQuery()
+      this.drawEcharts()
     })
   },
   methods: {
-    getQuery() {
-      switch (this.centerName) {
-        case '满意度情况':
-          this.drawEcharts('满意度情况')
-          break
-        case '刑事案件量':
-          this.drawEcharts('刑事案件量')
-          break
-      }
-
-    },
     selectCenter(item) {
       this.centerList.forEach(ite => {
         ite.isSelect = false
       })
       item.isSelect = true
       this.centerName = item.name
-      this.getQuery()
     },
     initChart() {
       this.chart = this.$echarts.init(document.getElementById('map'))
@@ -98,14 +75,14 @@ export default {
       this.chart.resize()
     },
 
-    drawEcharts(status) {
+    drawEcharts() {
       let splitList
-      switch (status) {
+      switch (this.centerName) {
         case '满意度情况':
           splitList = [
-            {start: 0, end: 60, label: '不满意 （<60%）', color: 'rgba(255, 92, 69,1)'},
+            {start: 0, end: 60, label: '不满意 （<60%）', color: 'rgba(219,112,147,1)'},
             {start: 60, end: 80, label: '较为满意 （80%>60%）', color: 'rgba(245, 229, 102,1)'},
-            {start: 80, label: '非常满意 （>80%）', color: 'rgba(90, 239, 123, 1)'}
+            {start: 80, label: '非常满意 （>80%）', color: 'rgba(0,255,255, 0.1)'}
           ]
           break
       }
@@ -177,34 +154,7 @@ export default {
           {
             type: 'map',
             mapType: 'wz', //
-            // data: [
-            //   {name: '景山街道', value: 1},
-            //   {name: '娄桥街道', value: 20},
-            //   {name: '仙岩街道', value: 100},
-            //   {name: '郭溪街道', value: 120},
-            //   {name: '新桥街道', value: 2},
-            //   {name: '梧田街道', value: 50},
-            //   {name: '潘桥街道', value: 30},
-            //   {name: '丽岙街道', value: 70},
-            //   {name: '南白象街道', value: 200},
-            //   {name: '瞿溪街道', value: 1},
-            //   {name: '茶山街道', value: 600},
-            //   {name: '泽雅镇', value: 3},
-            //   {name: '三垟街道', value: 10}],
-            data: [
-              {name: '永嘉县', value: 1},
-              {name: '乐清市', value: 20},
-              {name: '鹿城区', value: 100},
-              {name: '瓯海区', value: 120},
-              {name: '龙湾区', value: 2},
-              {name: '洞头区', value: 50},
-              {name: '瑞安市', value: 30},
-              {name: '文成县', value: 70},
-              {name: '平阳县', value: 200},
-              {name: '龙港市', value: 1},
-              {name: '泰顺县', value: 200},
-              {name: '苍南县', value: 1},
-            ],
+            data: this.dataValue,
             label: {
               show: true,
               textStyle: {
@@ -244,7 +194,7 @@ export default {
           }
         ]
       }
-      if (status === '刑事案件量') {
+      if (this.centerName === '刑事案件量') {
         options['geo'] = [ // 配合柱状图嵌入 所以使用geo绘制地图，并清空series里面的数据，不然会绘制出两个地图
           {
             map: 'wz',
@@ -257,7 +207,7 @@ export default {
         options.geo[0].itemStyle.normal.borderColor = 'rgba(134, 253, 250, 0.32)'
         options.series = []
         this.chart.setOption(options, true)
-        renderEachCity(this, cityList) // 柱状图嵌入方法
+        renderEachCity(this) // 柱状图嵌入方法
       } else {
         options['dataRange'] = {
           show: true,
@@ -271,7 +221,7 @@ export default {
         }
         this.chart.setOption(options, true)
         this.chart.on('click', (val) => {
-          if (val.name==='瓯海区'){
+          if (val.name === '瓯海区') {
             this.getNext()
           }
 
@@ -279,8 +229,29 @@ export default {
       }
     },
     getNext() {
-      this.$echarts.registerMap('wz', mapData)
-      this.chart.resize()
+      if (this.timer) {
+        clearTimeout(this.timer)
+      }
+      this.timer = setTimeout(async () => {
+        await this.$echarts.registerMap('wz', mapData)
+        await this.chart.resize()
+        this.dataValue = [
+          {name: '景山街道', value: 1},
+          {name: '娄桥街道', value: 20},
+          {name: '仙岩街道', value: 100},
+          {name: '郭溪街道', value: 120},
+          {name: '新桥街道', value: 2},
+          {name: '梧田街道', value: 50},
+          {name: '潘桥街道', value: 30},
+          {name: '丽岙街道', value: 70},
+          {name: '南白象街道', value: 200},
+          {name: '瞿溪街道', value: 1},
+          {name: '茶山街道', value: 600},
+          {name: '泽雅镇', value: 3},
+          {name: '三垟街道', value: 10}
+        ]
+        this.drawEcharts()
+      }, 200)
     }
   }
 }
