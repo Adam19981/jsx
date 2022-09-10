@@ -1,17 +1,34 @@
 <template>
   <div class="visualizationMain">
     <div ref="appRef" class="visualizationMain-content">
-      <dv-loading v-if="loading">Loading...</dv-loading>
-      <echartsMap v-else class="visualizationMain-content-map"></echartsMap>
+      <dv-loading v-if="loading" >Loading...</dv-loading>
+
+      <div v-else>
+        <left-top class="visualizationMain-content-leftTop"></left-top>
+        <left-center class="visualizationMain-content-leftCenter"></left-center>
+        <left-bottom class="visualizationMain-content-leftBottom"></left-bottom>
+
+        <echartsMap class="visualizationMain-content-map"></echartsMap>
+        <center-bottom class="visualizationMain-content-centerBottom"></center-bottom>
+
+        <right-top class="visualizationMain-content-rightTop"></right-top>
+        <right-bottom class="visualizationMain-content-rightBottom"></right-bottom>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
 import echartsMap from './echartsMap/index'
+import leftTop from '@/views/visualization/leftTop'
+import LeftCenter from "@/views/visualization/leftCenter";
+import leftBottom from "@/views/visualization/leftBottom";
+import centerBottom from "@/views/visualization/centerBottom";
+import rightTop from "@/views/visualization/rightTop";
+import rightBottom from "@/views/visualization/rightBottom";
 export default {
   name: "visualization",
-  components:{echartsMap},
+  components:{LeftCenter, echartsMap,leftTop,leftBottom,centerBottom,rightBottom,rightTop},
   data(){
     return{
       timer:null,
@@ -69,8 +86,44 @@ export default {
 
     &-map{
       position: absolute;
+      top: 13%;
+      left: 28%;
+    }
+
+    &-centerBottom{
+      position: absolute;
+      bottom: 3%;
+      left: 26%;
+    }
+
+    &-leftTop{
+      position: absolute;
       top: 10%;
-      left: 24%;
+      left: 2%;
+    }
+
+    &-leftCenter{
+      position: absolute;
+      top: 37%;
+      left: 2%;
+    }
+
+    &-leftBottom{
+      position: absolute;
+      bottom:3%;
+      left: 2%;
+    }
+
+    &-rightTop{
+      position: absolute;
+      top:10%;
+      right: 2%;
+    }
+
+    &-rightBottom{
+      position: absolute;
+      bottom:3%;
+      right: 2%;
     }
   }
 

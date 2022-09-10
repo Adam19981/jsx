@@ -16,6 +16,7 @@
 
 <script>
 import mapData from './mapData.json'
+import mapWenZhou from './mapWenZhou.json'
 import renderEachCity from "./echartsMapMethod";
 
 const cityList = [{street_name: '景山街道', value: 1},
@@ -91,7 +92,7 @@ export default {
     },
     initChart() {
       this.chart = this.$echarts.init(document.getElementById('map'))
-      this.$echarts.registerMap('wz', mapData)
+      this.$echarts.registerMap('wz', mapWenZhou)
     },
     chartResize() {
       this.chart.resize()
@@ -176,20 +177,34 @@ export default {
           {
             type: 'map',
             mapType: 'wz', //
+            // data: [
+            //   {name: '景山街道', value: 1},
+            //   {name: '娄桥街道', value: 20},
+            //   {name: '仙岩街道', value: 100},
+            //   {name: '郭溪街道', value: 120},
+            //   {name: '新桥街道', value: 2},
+            //   {name: '梧田街道', value: 50},
+            //   {name: '潘桥街道', value: 30},
+            //   {name: '丽岙街道', value: 70},
+            //   {name: '南白象街道', value: 200},
+            //   {name: '瞿溪街道', value: 1},
+            //   {name: '茶山街道', value: 600},
+            //   {name: '泽雅镇', value: 3},
+            //   {name: '三垟街道', value: 10}],
             data: [
-              {name: '景山街道', value: 1},
-              {name: '娄桥街道', value: 20},
-              {name: '仙岩街道', value: 100},
-              {name: '郭溪街道', value: 120},
-              {name: '新桥街道', value: 2},
-              {name: '梧田街道', value: 50},
-              {name: '潘桥街道', value: 30},
-              {name: '丽岙街道', value: 70},
-              {name: '南白象街道', value: 200},
-              {name: '瞿溪街道', value: 1},
-              {name: '茶山街道', value: 600},
-              {name: '泽雅镇', value: 3},
-              {name: '三垟街道', value: 10}],
+              {name: '永嘉县', value: 1},
+              {name: '乐清市', value: 20},
+              {name: '鹿城区', value: 100},
+              {name: '瓯海区', value: 120},
+              {name: '龙湾区', value: 2},
+              {name: '洞头区', value: 50},
+              {name: '瑞安市', value: 30},
+              {name: '文成县', value: 70},
+              {name: '平阳县', value: 200},
+              {name: '龙港市', value: 1},
+              {name: '泰顺县', value: 200},
+              {name: '苍南县', value: 1},
+            ],
             label: {
               show: true,
               textStyle: {
@@ -206,7 +221,7 @@ export default {
               }
 
             },
-            zoom: 1.25,
+            zoom: 1.1,
             itemStyle: {
               normal: { // 默认背景颜色
                 borderColor: '#999',
@@ -233,7 +248,7 @@ export default {
         options['geo'] = [ // 配合柱状图嵌入 所以使用geo绘制地图，并清空series里面的数据，不然会绘制出两个地图
           {
             map: 'wz',
-            zoom: 1.25,
+            zoom: 1.1,
             itemStyle: options.series[0].itemStyle,
             select: options.series[0].select,
             tooltip: options.tooltip
@@ -255,9 +270,18 @@ export default {
           }
         }
         this.chart.setOption(options, true)
-      }
-    }
+        this.chart.on('click', (val) => {
+          if (val.name==='瓯海区'){
+            this.getNext()
+          }
 
+        })
+      }
+    },
+    getNext() {
+      this.$echarts.registerMap('wz', mapData)
+      this.chart.resize()
+    }
   }
 }
 </script>
@@ -265,8 +289,8 @@ export default {
 <style scoped lang="less">
 .mapMain {
   position: relative;
-  width: 54%;
-  height: 61%;
+  width: 45%;
+  height: 60%;
   padding-top: 20px;
 
   .topPage {
@@ -291,7 +315,7 @@ export default {
       }
     }
 
-    .topUl:hover{
+    .topUl:hover {
       color: #96D5DE;
       font-weight: 700;
     }
