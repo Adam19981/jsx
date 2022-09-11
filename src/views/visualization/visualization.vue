@@ -1,15 +1,16 @@
 <template>
   <div class="visualizationMain">
     <div ref="appRef" class="visualizationMain-content">
-      <dv-loading v-if="loading" >Loading...</dv-loading>
+      <dv-loading v-if="loading">Loading...</dv-loading>
 
       <div v-else>
-        <left-top class="visualizationMain-content-leftTop"></left-top>
+        <div class="visualizationMain-content-titleBtn" @click="handleClick">切换模式</div>
+        <left-top :type="type" class="visualizationMain-content-leftTop"></left-top>
         <left-center class="visualizationMain-content-leftCenter"></left-center>
         <left-bottom class="visualizationMain-content-leftBottom"></left-bottom>
 
         <echartsMap class="visualizationMain-content-map"></echartsMap>
-        <center-bottom class="visualizationMain-content-centerBottom"></center-bottom>
+        <center-bottom :type="type" class="visualizationMain-content-centerBottom"></center-bottom>
 
         <right-top class="visualizationMain-content-rightTop"></right-top>
         <right-bottom class="visualizationMain-content-rightBottom"></right-bottom>
@@ -26,53 +27,65 @@ import leftBottom from "@/views/visualization/leftBottom";
 import centerBottom from "@/views/visualization/centerBottom";
 import rightTop from "@/views/visualization/rightTop";
 import rightBottom from "@/views/visualization/rightBottom";
+
 export default {
   name: "visualization",
-  components:{LeftCenter, echartsMap,leftTop,leftBottom,centerBottom,rightBottom,rightTop},
-  data(){
-    return{
-      timer:null,
-      loading:true
+  components: {LeftCenter, echartsMap, leftTop, leftBottom, centerBottom, rightBottom, rightTop},
+  data() {
+    return {
+      timer: null,
+      loading: true,
+      type: 1
     }
   },
+
   mounted() {
     this.resize()
     window.addEventListener('resize', this.resize)
-    setTimeout(()=>{
+    setTimeout(() => {
       this.loading = false
-    },1000)
+    }, 1000)
   },
-  methods:{
-    getScale(){
+  methods: {
+    getScale() {
       let ww = window.innerWidth / 1920;
       let wh = window.innerHeight / 1080;
       return ww < wh ? ww : wh;
     },
-    resize(){
-      if (this.timer){
+    resize() {
+      if (this.timer) {
         clearTimeout(this.timer)
       }
-      setTimeout(()=>{
+      this.timer = setTimeout(() => {
         this.$refs.appRef.style.transform = `scale(${this.getScale()}) translate(-50%, -50%)`;
-      },200)
-
+      }, 200)
+    },
+    handleClick() {
+      switch (this.type) {
+        case 1:
+          this.type = 2
+          break
+        case 2:
+          this.type = 1
+          break
+      }
     }
   },
-  beforeDestroy () {
+  beforeDestroy() {
     window.removeEventListener('resize', this.resize)
   },
 }
 </script>
 
 <style scoped lang="scss">
-.visualizationMain{
+.visualizationMain {
   width: 100%;
   height: 100%;
   overflow: hidden;
   position: relative;
   background-color: black;
 
-  &-content{
+  &-content {
     width: 1920px;
     height: 1080px;
     position: absolute;
@@ -81,48 +94,61 @@ export default {
     transition: all 0.5s;
     transform: scale(1) translate(-50%, -50%);
     transform-origin: left top;
-    background:url("~@/assets/visualization/background.webp") no-repeat;
+    background: url("~@/assets/visualization/background.webp") no-repeat;
     background-size: 100% 100%;
 
-    &-map{
+    &-titleBtn {
+      position: absolute;
+      top: 3.5%;
+      left: 25%;
+      cursor: pointer;
+      color: #fff
+    }
+
+    &-titleBtn:hover {
+      font-weight: 700;
+      color: #5ae3fb;
+    }
+
+    &-map {
       position: absolute;
       top: 13%;
       left: 28%;
     }
 
-    &-centerBottom{
+    &-centerBottom {
       position: absolute;
-      bottom: 3%;
+      bottom:3%;
       left: 26%;
     }
 
-    &-leftTop{
+    &-leftTop {
       position: absolute;
       top: 10%;
       left: 2%;
     }
 
-    &-leftCenter{
+    &-leftCenter {
       position: absolute;
       top: 37%;
       left: 2%;
     }
 
-    &-leftBottom{
+    &-leftBottom {
       position: absolute;
-      bottom:3%;
+      bottom: 3%;
       left: 2%;
     }
 
-    &-rightTop{
+    &-rightTop {
       position: absolute;
-      top:10%;
+      top: 10%;
       right: 2%;
     }
 
-    &-rightBottom{
+    &-rightBottom {
       position: absolute;
-      bottom:3%;
+      bottom: 3%;
       right: 2%;
     }
   }
