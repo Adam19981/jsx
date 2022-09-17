@@ -14,7 +14,7 @@ export default {
 }
 </script>
 
-<style scoped lang="less">
+<style scoped lang="less">2
 .main{
   width: 23%;
   height: 25%;

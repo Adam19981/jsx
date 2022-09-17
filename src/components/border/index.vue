@@ -30,7 +30,7 @@ export default {
     return{
       indoorParams:[1]
     }
-  }
+  },
 };
 </script>
 <style scoped lang="scss">

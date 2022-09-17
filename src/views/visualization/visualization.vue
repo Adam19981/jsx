@@ -6,14 +6,24 @@
       <div v-else>
         <div class="visualizationMain-content-titleBtn" @click="handleClick">切换模式</div>
         <left-top :type="type" class="visualizationMain-content-leftTop"></left-top>
-        <left-center class="visualizationMain-content-leftCenter"></left-center>
-        <left-bottom class="visualizationMain-content-leftBottom"></left-bottom>
 
-        <echartsMap class="visualizationMain-content-map"></echartsMap>
+        <transition name="el-fade-in-linear">
+          <left-center :type="type" v-if="type===1" class="visualizationMain-content-leftCenter"></left-center>
+        </transition>
+
+        <left-bottom :type="type" class="visualizationMain-content-leftBottom"></left-bottom>
+
+        <echarts-map :type="type" class="visualizationMain-content-map" ref="echartsMap"></echarts-map>
+
         <center-bottom :type="type" class="visualizationMain-content-centerBottom"></center-bottom>
 
-        <right-top class="visualizationMain-content-rightTop"></right-top>
-        <right-bottom class="visualizationMain-content-rightBottom"></right-bottom>
+        <right-top :type="type" class="visualizationMain-content-rightTop"></right-top>
+
+        <transition name="el-fade-in-linear">
+          <rightCenter v-if="type===2" class="visualizationMain-content-rightCenter"></rightCenter>
+        </transition>
+
+        <right-bottom :type="type" class="visualizationMain-content-rightBottom"></right-bottom>
       </div>
     </div>
   </div>
@@ -27,10 +37,11 @@ import leftBottom from "@/views/visualization/leftBottom";
 import centerBottom from "@/views/visualization/centerBottom";
 import rightTop from "@/views/visualization/rightTop";
 import rightBottom from "@/views/visualization/rightBottom";
+import rightCenter from "@/views/visualization/rightCenter";
 
 export default {
   name: "visualization",
-  components: {LeftCenter, echartsMap, leftTop, leftBottom, centerBottom, rightBottom, rightTop},
+  components: {LeftCenter, echartsMap, leftTop, leftBottom, centerBottom, rightBottom,rightCenter, rightTop},
   data() {
     return {
       timer: null,
@@ -38,7 +49,21 @@ export default {
       type: 1
     }
   },
-
+  watch:{
+    type:{
+      handler(newVal){
+        if (newVal===1){
+          this.$nextTick(()=>{
+            this.handleOrdinary()
+          })
+        }else{
+          this.$nextTick(()=>{
+            this.handleSpecial()
+          })
+        }
+      }
+    }
+  },
   mounted() {
     this.resize()
     window.addEventListener('resize', this.resize)
@@ -69,6 +94,12 @@ export default {
           this.type = 1
           break
       }
+    },
+    handleOrdinary(){ //普通状态
+      this.$refs.echartsMap.chart.resize()
+    },
+    handleSpecial(){//特殊状态
+      this.$refs.echartsMap.chart.resize()
     }
   },
   beforeDestroy() {
@@ -113,7 +144,7 @@ export default {
     &-map {
       position: absolute;
       top: 13%;
-      left: 28%;
+      left: 26%;
     }
 
     &-centerBottom {
@@ -130,7 +161,7 @@ export default {
 
     &-leftCenter {
       position: absolute;
-      top: 37%;
+      top: 35%;
       left: 2%;
     }
 
@@ -143,6 +174,12 @@ export default {
     &-rightTop {
       position: absolute;
       top: 10%;
+      right: 2%;
+    }
+
+    &-rightCenter{
+      position: absolute;
+      top: 42%;
       right: 2%;
     }
 

@@ -10,7 +10,8 @@
       </div>
     </div>
 
-    <div id="map" style="width: 100%;height: 100%"></div>
+    <div id="map"
+         :style="{transform:type===1?'scale(1.15)':'scale(1)',marginTop:type===1?'20px':'-20px'}"></div>
   </div>
 </template>
 
@@ -22,6 +23,12 @@ import renderEachCity from "./echartsMapMethod";
 
 export default {
   name: 'echartsMap',
+  props:{
+    type:{
+      type:Number,
+      default:1
+    }
+  },
   data() {
     return {
 
@@ -87,12 +94,6 @@ export default {
           break
       }
       const options = {
-        toolbox: {
-          show: true,
-          left: 'center',
-          top: 'center'
-        },
-        layoutCenter: ['30%', '30%'],
         tooltip: {
           className: 'tooltipStyle',
           formatter(params) {
@@ -211,8 +212,8 @@ export default {
       } else {
         options['dataRange'] = {
           show: true,
-          x: '10px',
-          y: 'bottom',
+          x: '7%',
+          y: '84%',
           splitList: splitList,
           textStyle: {
             color: '#96D5DE', // 值域文字颜色
@@ -260,17 +261,16 @@ export default {
 <style scoped lang="less">
 .mapMain {
   position: relative;
-  width: 45%;
+  width: 48%;
   height: 60%;
   padding-top: 20px;
+
 
   .topPage {
     display: flex;
     position: absolute;
-    width: 350px;
     top: 0;
-    margin-right: -175px;
-    right: 50%;
+    left: 0;
     z-index: 99;
 
     .topUl {
@@ -297,5 +297,9 @@ export default {
   background: rgba(38, 70, 90, 0.84);
   border: 1px solid #5ae3fb !important;
 }
-
+#map{
+  transition: 0.5s;
+  width: 100%;
+  height: 100%
+}
 </style>

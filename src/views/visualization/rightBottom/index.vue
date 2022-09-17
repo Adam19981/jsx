@@ -1,16 +1,23 @@
 <template>
-  <dv-border-box-8 class="main"></dv-border-box-8>
+  <dynamic-border class="main" :height="type===1?'60%':'28%'" :width="'23%'">
+
+  </dynamic-border>
 </template>
 
 <script>
 export default {
-  name: "leftBottom"
+  name: "leftBottom",
+  props:{
+    type:{
+      type:Number,
+      default:1
+    }
+  }
 }
 </script>
 
 <style scoped lang="less">
 .main{
-  width: 23%;
-  height: 60%!important;
+  transition: 0.5s;
 }
 </style>

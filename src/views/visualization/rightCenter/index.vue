@@ -1,12 +1,12 @@
 <template>
+  <dynamic-border class="main" :height="'25%'" :width="'23%'">
 
-  <dynamic-border class="main" :height="type===1?'20%':'28%'" :width="'48%'"></dynamic-border>
+  </dynamic-border>
 </template>
 
 <script>
-
 export default {
-  name: "centerBottom",
+  name: "rightCenter",
   props:{
     type:{
       type:Number,
@@ -18,6 +18,5 @@ export default {
 
 <style scoped lang="less">
 .main{
-  transition: 0.5s;
 }
 </style>
