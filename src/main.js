@@ -11,13 +11,14 @@ import components from "./components";
 import '../api/mock.js'
 import * as echarts from 'echarts';
 Vue.config.productionTip = false
+Vue.prototype.$echarts =  echarts
 Vue.use(components)
 Vue.use(ElementUI)
 Vue.use(dataV)
 
 Vue.use(modal)
 Vue.use(echartsStyle)
-Vue.prototype.$echarts =  echarts
+
 new Vue({
     render: h => h(App),
     store,

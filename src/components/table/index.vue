@@ -176,6 +176,7 @@
 import { Loading } from 'element-ui'
 
 export default {
+  name:'MTable',
   data() {
     return {}
   },

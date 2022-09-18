@@ -21,7 +21,7 @@ export default {
     },
     height: {
       type: String,
-      default: '2.5rem'
+      default: '100%'
     },
     options: {
       type: Object,
@@ -36,7 +36,6 @@ export default {
   watch: {
     options: {
       handler(options) {
-        console.log(1)
         // 设置true清空echart缓存
         if (this.chart) {
           this.chart.setOption(options, true)
