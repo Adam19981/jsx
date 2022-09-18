@@ -11,27 +11,26 @@
     </div>
 
     <div id="map"
-         :style="{transform:type===1?'scale(1.15)':'scale(1)',marginTop:type===1?'20px':'-20px'}"></div>
+         :style="{transform:type===1?'scale(1.1)':'scale(0.9)',marginTop:type===1?'10px':'-20px'}"></div>
   </div>
 </template>
 
 <script>
 import mapData from './mapData.json'
-import mapWenZhou from './mapWenZhou.json'
+// import mapWenZhou from './mapWenZhou.json'
 import renderEachCity from "./echartsMapMethod";
 
 
 export default {
   name: 'echartsMap',
-  props:{
-    type:{
-      type:Number,
-      default:1
+  props: {
+    type: {
+      type: Number,
+      default: 1
     }
   },
   data() {
     return {
-
       centerList: [
         {name: '满意度情况', isSelect: true},
         {name: '刑事案件量', isSelect: false}
@@ -42,18 +41,19 @@ export default {
       timer: null,
       centerName: '满意度情况',
       dataValue: [
-        {name: '永嘉县', value: 1},
-        {name: '乐清市', value: 20},
-        {name: '鹿城区', value: 100},
-        {name: '瓯海区', value: 120},
-        {name: '龙湾区', value: 2},
-        {name: '洞头区', value: 50},
-        {name: '瑞安市', value: 30},
-        {name: '文成县', value: 70},
-        {name: '平阳县', value: 200},
-        {name: '龙港市', value: 1},
-        {name: '泰顺县', value: 200},
-        {name: '苍南县', value: 1},
+        {name: '景山街道', value: 1},
+        {name: '娄桥街道', value: 20},
+        {name: '仙岩街道', value: 100},
+        {name: '郭溪街道', value: 120},
+        {name: '新桥街道', value: 2},
+        {name: '梧田街道', value: 50},
+        {name: '潘桥街道', value: 30},
+        {name: '丽岙街道', value: 70},
+        {name: '南白象街道', value: 200},
+        {name: '瞿溪街道', value: 1},
+        {name: '茶山街道', value: 600},
+        {name: '泽雅镇', value: 3},
+        {name: '三垟街道', value: 10}
       ]
 
     }
@@ -73,26 +73,22 @@ export default {
       })
       item.isSelect = true
       this.centerName = item.name
+      this.drawEcharts()
     },
     initChart() {
       this.chart = this.$echarts.init(document.getElementById('map'))
-      this.$echarts.registerMap('wz', mapWenZhou)
+      this.$echarts.registerMap('wz', mapData)
     },
     chartResize() {
       this.chart.resize()
     },
 
     drawEcharts() {
-      let splitList
-      switch (this.centerName) {
-        case '满意度情况':
-          splitList = [
-            {start: 0, end: 60, label: '不满意 （<60%）', color: 'rgba(219,112,147,1)'},
-            {start: 60, end: 80, label: '较为满意 （80%>60%）', color: 'rgba(245, 229, 102,1)'},
-            {start: 80, label: '非常满意 （>80%）', color: 'rgba(0,255,255, 0.1)'}
-          ]
-          break
-      }
+      const splitList = [
+        {start: 0, end: 60, label: '不满意 （<60）', color: '#9e5630'},
+        {start: 60, end: 80, label: '较为满意 （60-80）', color: '#1F66A7'},
+        {start: 80, label: '非常满意 （>80）', color: '#168A8E'}
+      ]
       const options = {
         tooltip: {
           className: 'tooltipStyle',
@@ -159,14 +155,14 @@ export default {
             label: {
               show: true,
               textStyle: {
-                fontSize: '12px',
+                fontSize: '14px',
                 fontWeight: 700,
-                color: '#fff'
+                color: '#FFF'
               }, // 省份标签字体颜色
               emphasis: { // 对应的鼠标悬浮效果
                 show: true,
                 textStyle: {
-                  color: '#333',
+                  color: '#FFF',
                   fontWeight: 700
                 }
               }
@@ -175,21 +171,21 @@ export default {
             zoom: 1.1,
             itemStyle: {
               normal: { // 默认背景颜色
-                borderColor: '#999',
+                borderColor: '#5FBEE8',
                 borderWidth: 2,
                 areaColor: 'rgba(255, 255, 255, 0.12)'
               },
               emphasis: { // 鼠标移动后后颜色
                 borderWidth: 2,
-                borderColor: '#ffffb9',
-                areaColor: '#efe48c'
+                borderColor: '#5FBEE8',
+                areaColor: '#0C529C'
               }
             },
             select: { // 选中后颜色
               itemStyle: {
                 borderWidth: 2,
-                borderColor: '#ffffb9',
-                areaColor: '#efe48c'
+                borderColor: '#5FBEE8',
+                areaColor: '#0C529C'
               }
             }
           }
@@ -221,39 +217,39 @@ export default {
           }
         }
         this.chart.setOption(options, true)
-        this.chart.on('click', (val) => {
-          if (val.name === '瓯海区') {
-            this.getNext()
-          }
-
-        })
+        // this.chart.on('click', (val) => {
+        //   if (val.name === '瓯海区') {
+        //     this.getNext()
+        //   }
+        //
+        // })
       }
     },
-    getNext() {
-      if (this.timer) {
-        clearTimeout(this.timer)
-      }
-      this.timer = setTimeout(async () => {
-        await this.$echarts.registerMap('wz', mapData)
-        await this.chart.resize()
-        this.dataValue = [
-          {name: '景山街道', value: 1},
-          {name: '娄桥街道', value: 20},
-          {name: '仙岩街道', value: 100},
-          {name: '郭溪街道', value: 120},
-          {name: '新桥街道', value: 2},
-          {name: '梧田街道', value: 50},
-          {name: '潘桥街道', value: 30},
-          {name: '丽岙街道', value: 70},
-          {name: '南白象街道', value: 200},
-          {name: '瞿溪街道', value: 1},
-          {name: '茶山街道', value: 600},
-          {name: '泽雅镇', value: 3},
-          {name: '三垟街道', value: 10}
-        ]
-        this.drawEcharts()
-      }, 200)
-    }
+    // getNext() {
+    //   if (this.timer) {
+    //     clearTimeout(this.timer)
+    //   }
+    //   this.timer = setTimeout(async () => {
+    //     await this.$echarts.registerMap('wz', mapData)
+    //     await this.chart.resize()
+    //     this.dataValue = [
+    //       {name: '景山街道', value: 1},
+    //       {name: '娄桥街道', value: 20},
+    //       {name: '仙岩街道', value: 100},
+    //       {name: '郭溪街道', value: 120},
+    //       {name: '新桥街道', value: 2},
+    //       {name: '梧田街道', value: 50},
+    //       {name: '潘桥街道', value: 30},
+    //       {name: '丽岙街道', value: 70},
+    //       {name: '南白象街道', value: 200},
+    //       {name: '瞿溪街道', value: 1},
+    //       {name: '茶山街道', value: 600},
+    //       {name: '泽雅镇', value: 3},
+    //       {name: '三垟街道', value: 10}
+    //     ]
+    //     this.drawEcharts()
+    //   }, 200)
+    // }
   }
 }
 </script>
@@ -269,8 +265,8 @@ export default {
   .topPage {
     display: flex;
     position: absolute;
-    top: 0;
-    left: 0;
+    top: -30px;
+    right: 0;
     z-index: 99;
 
     .topUl {
@@ -297,7 +293,8 @@ export default {
   background: rgba(38, 70, 90, 0.84);
   border: 1px solid #5ae3fb !important;
 }
-#map{
+
+#map {
   transition: 0.5s;
   width: 100%;
   height: 100%

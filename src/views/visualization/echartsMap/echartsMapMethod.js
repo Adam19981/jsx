@@ -1,17 +1,19 @@
 // 在地图上嵌入柱状图
-const cityList = [{street_name: '景山街道', value: 1},
-    {street_name: '娄桥街道', value: 20},
-    {street_name: '仙岩街道', value: 100},
-    {street_name: '郭溪街道', value: 120},
-    {street_name: '新桥街道', value: 2},
-    {street_name: '梧田街道', value: 50},
-    {street_name: '潘桥街道', value: 30},
-    {street_name: '丽岙街道', value: 70},
-    {street_name: '南白象街道', value: 200},
-    {street_name: '瞿溪街道', value: 1},
-    {street_name: '茶山街道', value: 600},
-    {street_name: '泽雅镇', value: 3},
-    {street_name: '三垟街道', value: 10}]
+const cityList = [
+    {name: '景山街道', value: 1},
+    {name: '娄桥街道', value: 20},
+    {name: '仙岩街道', value: 100},
+    {name: '郭溪街道', value: 120},
+    {name: '新桥街道', value: 2},
+    {name: '梧田街道', value: 50},
+    {name: '潘桥街道', value: 30},
+    {name: '丽岙街道', value: 70},
+    {name: '南白象街道', value: 200},
+    {name: '瞿溪街道', value: 1},
+    {name: '茶山街道', value: 600},
+    {name: '泽雅镇', value: 3},
+    {name: '三垟街道', value: 10}
+]
 
 
 export default function renderEachCity(that) {
@@ -22,10 +24,9 @@ export default function renderEachCity(that) {
         series: []
     }
     that.$echarts.util.each(cityList, (dataItem, idx) => {
-        if (dataItem.street_name !== '经济开发区') {
             // const inflationData = [dataItem.handle_cnt, dataItem.finish_handle_cnt]
             const inflationData = [10, 30]
-            const geoCord = that.geoCordMap[dataItem.street_name] // 获得城市的坐标
+            const geoCord = that.geoCordMap[dataItem.name] // 获得城市的坐标
             console.log(geoCord)
             const cord = that.chart.convertToPixel('geo', geoCord) // 转换坐标系上的点到像素坐标值。
             idx += ''
@@ -127,7 +128,7 @@ export default function renderEachCity(that) {
                 }
 
             })
-        }
+
     })
     optionColumn['legend'] = {
         orient: 'vertical',

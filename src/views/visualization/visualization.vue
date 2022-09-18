@@ -11,7 +11,7 @@
           <left-center :type="type" v-if="type===1" class="visualizationMain-content-leftCenter"></left-center>
         </transition>
 
-        <left-bottom :type="type" class="visualizationMain-content-leftBottom"></left-bottom>
+        <left-bottom :type="type" class="visualizationMain-content-leftBottom" ref="leftBottom"></left-bottom>
 
         <echarts-map :type="type" class="visualizationMain-content-map" ref="echartsMap"></echarts-map>
 
@@ -55,6 +55,7 @@ export default {
         if (newVal===1){
           this.$nextTick(()=>{
             this.handleOrdinary()
+
           })
         }else{
           this.$nextTick(()=>{
@@ -96,10 +97,10 @@ export default {
       }
     },
     handleOrdinary(){ //普通状态
-      this.$refs.echartsMap.chart.resize()
+      // this.$refs.leftBottom.drawEcharts()//左下
     },
     handleSpecial(){//特殊状态
-      this.$refs.echartsMap.chart.resize()
+      // this.$refs.leftBottom.drawEchartsV2()//左下
     }
   },
   beforeDestroy() {
