@@ -1,6 +1,6 @@
-import otherSide from '@/components/otherSide.jsx'
-import menuHeader from '@/components/menuHeader.vue'
-import tagger from '@/components/tagger.vue'
+import otherSide from './otherSide/index'
+import menuHeader from './menuHeader'
+import tagger from './tagger'
 
 const mainContent = {
     name: 'mainContent',
@@ -8,9 +8,9 @@ const mainContent = {
 
     render() {
         return (
-            <el-container  style={{height:'100vh'}}>
+            <el-container style={{height: '100vh'}}>
                 <el-aside width='auto'>
-                    <otherSide  />
+                    <otherSide/>
                 </el-aside>
                 <el-container>
                     <el-header>
@@ -18,7 +18,9 @@ const mainContent = {
                     </el-header>
                     <tagger/>
                     <el-main style={{backgroundColor: '#eee'}}>
-                        <router-view></router-view>
+                        <transition appear name="el-fade-in-linear">
+                            <router-view/>
+                        </transition>
                     </el-main>
                 </el-container>
             </el-container>

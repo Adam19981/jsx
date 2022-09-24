@@ -10,7 +10,7 @@ class mapPublic {
             plugins: [''],
         })
         this.map = new this.mapExample.Map(id, {
-            mapStyle: 'amap://styles/light',
+            mapStyle: 'amap://styles/darkblue',
             resizeEnable: true,
             zoom: 15,
             center: [120.699279, 27.993849]

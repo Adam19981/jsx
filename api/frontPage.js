@@ -1,9 +1,21 @@
-import axios from "./axios.js";
+import request from "./axios.js";
 
-export const getMenu = (param) => {
-    return axios.request({
+
+//用户信息
+export function getUser(req) {
+    return request({
+        url: '/api/user',
+        method: 'get',
+        params: req
+    })
+}
+
+
+//动态路由
+export function getMenu(req) {
+    return request({
         url: '/menu/getMenu',
         method: 'post',
-        data: param
+        data: req
     })
 }

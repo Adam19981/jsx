@@ -2,6 +2,7 @@
   <header>
     <div class="l-content">
       <el-button @click="changeIsCollapse"  icon='el-icon-menu' size="mini"></el-button>
+      <el-button @click="handlePush"  icon='el-icon-data-line' size="mini" plain  type="primary">数据可视化</el-button>
       <el-breadcrumb separator-class="el-icon-arrow-right">
         <el-breadcrumb-item v-for='item in tags' :key='item.name' :to="{ path: item.path }">{{ item.label }}
         </el-breadcrumb-item>
@@ -31,20 +32,24 @@ export default {
      userName:localStorage.getItem('token')
     }
   },
+  computed: {
+    ...mapState({
+      tags: state => state.breadcrumbList
+    })
+  },
+
   methods: {
     changeIsCollapse() {
       this.$store.commit('changeIsCollapse')
+    },
+    handlePush(){
+      this.$router.push({name:'visualization'})
     },
     logout() {
       localStorage.removeItem('token')
       this.$store.menu = []
       this.$router.push({name: 'login'})
     }
-  },
-  computed: {
-    ...mapState({
-      tags: state => state.breadcrumbList
-    })
   },
 
 }

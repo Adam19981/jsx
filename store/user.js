@@ -2,7 +2,6 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import {getMenu} from "../api/frontPage";
 import filterASyncRoutes from "../router/kineticRouter";
-import getters from "./getter";
 
 
 Vue.use(Vuex)
@@ -66,5 +65,4 @@ export default new Vuex.Store({
     actions,
     mutations,
     state,
-    getters
 })

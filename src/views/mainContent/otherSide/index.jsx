@@ -1,4 +1,4 @@
-import otherSideStyle from './otherSide.module.scss'
+import otherSideStyle from './index.module.scss'
 
 
 

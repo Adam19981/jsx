@@ -53,7 +53,7 @@ export default {
           const timestamp = new Date().getTime()+60*60*24*1000
           localStorage.setItem('timestamp',timestamp+'')
           localStorage.setItem('token', this.form.userId)
-          this.$router.push({path: '/'})
+          this.$router.push({name: 'visualization'})
         } else {
           console.log('false')
         }

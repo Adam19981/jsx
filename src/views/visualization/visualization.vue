@@ -5,6 +5,8 @@
 
       <div v-else>
         <div class="visualizationMain-content-titleBtn" @click="handleClick">切换模式</div>
+
+        <div class="visualizationMain-content-push" @click="handlePush">工作台</div>
         <left-top :type="type" class="visualizationMain-content-leftTop"></left-top>
 
         <transition name="el-fade-in-linear">
@@ -96,6 +98,9 @@ export default {
           break
       }
     },
+    handlePush(){
+      this.$router.push({name:'workbench'})
+    },
     handleOrdinary(){ //普通状态
       // this.$refs.leftBottom.drawEcharts()//左下
     },
@@ -138,6 +143,19 @@ export default {
     }
 
     &-titleBtn:hover {
+      font-weight: 700;
+      color: #5ae3fb;
+    }
+
+    &-push{
+      position: absolute;
+      top: 3.5%;
+      right: 3%;
+      cursor: pointer;
+      color: #fff
+    }
+
+    &-push:hover {
       font-weight: 700;
       color: #5ae3fb;
     }

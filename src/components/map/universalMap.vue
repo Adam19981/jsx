@@ -1,30 +1,29 @@
 <template>
-  <div style="position: relative">
-    <div class="form">
-      <el-select
-          style="width: 30%"
-          v-model="place_id"
-          remote
-          filterable
-          clearable
-          placeholder="请输入搜索的内容"
-          :remote-method="handleFilterable"
-          @change="handleSelect"
-      >
-        <el-option
-            v-for="item in options"
-            :key="item.id"
-            :label="item.name"
-            :value="item.location.toString()"
-        ></el-option>
-      </el-select>
-    </div>
+
     <div
         id="map"
         class="m-map"
     >
+      <div class="form">
+        <el-select
+            style="width: 30%"
+            v-model="place_id"
+            remote
+            filterable
+            clearable
+            placeholder="请输入搜索的内容"
+            :remote-method="handleFilterable"
+            @change="handleSelect"
+        >
+          <el-option
+              v-for="item in options"
+              :key="item.id"
+              :label="item.name"
+              :value="item.location.toString()"
+          ></el-option>
+        </el-select>
+      </div>
     </div>
-  </div>
 </template>
 
 <script>
@@ -43,6 +42,7 @@ export default {
     }
   },
   mounted() {
+    console.log(1)
     mapManager.createMap(this.id)
   },
   methods: {
@@ -107,13 +107,15 @@ export default {
 <style scoped>
 .m-map {
   height: calc(100vh - 105px);
-  width: calc(100vw - 750px);
+  width: 100%;
+  position: relative;
 }
 
 .form {
   width: 50%;
   position: absolute;
   top: 2%;
-  z-index: 999;
+  left: 1%;
+  z-index: 10;
 }
 </style>

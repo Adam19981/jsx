@@ -1,18 +1,14 @@
 import axios from "axios";
-import config from './index.js'
-const baseUrl = process.env.NODE_ENV === 'development' ? config.baseUrl.dev : config.baseUrl.pro
+
+
+
 
 class HttpRequest {
+    baseUrl=''
     constructor(baseUrl) {
         this.baseUrl = baseUrl
     }
-    getInsideConfig() {
-        const config = {
-            baseUrl: this.baseUrl,
-            header: {}
-        }
-        return config
-    }
+
     interceptors(instance) {
         instance.interceptors.request.use(function(config) {
                 return config;
@@ -21,17 +17,20 @@ class HttpRequest {
                 return Promise.reject(error)
             }
         instance.interceptors.response.use(function(response) {
-                return response
+                return response.data
             }),
             function(error) {
                 return Promise.reject(error)
             }
     }
-    request(options) {
-        const instance = axios.create()
-        options = {...this.getInsideConfig(), ...options }
+    request() {
+        console.log(this.baseUrl)
+        const instance = axios.create({
+            baseURL:this.baseUrl,
+            timeout:5000
+        })
         this.interceptors(instance)
-        return instance(options)
+        return instance
     }
 }
-export default new HttpRequest(baseUrl)
+export default new HttpRequest('https://www.fastmock.site/mock/0308fe18ed0841df54558340feb89b5f/vue2-demo').request()
