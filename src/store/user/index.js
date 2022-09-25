@@ -27,7 +27,7 @@ export default {
                 menu(req).then(res => {
                     const {data} = res
                     commit('setMenu', data.menu)
-                    resolve(data)
+                    resolve(data.menu)
                 })
             })
         },

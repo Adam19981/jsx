@@ -16,8 +16,8 @@ const mainContent = {
                     <el-header>
                         <menu-header/>
                     </el-header>
-                    <tagger/>
                     <el-main style={{backgroundColor: '#eee'}}>
+                        <tagger/>
                         <transition appear name="el-fade-in-linear">
                             <router-view/>
                         </transition>

@@ -23,7 +23,17 @@ const router = new VueRouter({
     mode: 'history'
 })
 
-
+function getFirstTabs(menu){ //获取tabs的默认第一栏
+    let  obj = {}
+    for (let i = 0 ; i<menu.length ; i++){
+        if (!menu[i].hidden){
+            obj['name'] = menu[i].name
+            obj['label'] = menu[i].meta.title
+            break
+        }
+    }
+    return obj;
+}
 router.beforeEach(async (to, form, next) => {
     if (to.name === 'login') {
         next()
@@ -36,11 +46,12 @@ router.beforeEach(async (to, form, next) => {
                 next()
             } else {
                 const info = await store.dispatch('getUserInfo', token)
-                await store.dispatch('getUserRouter', info.role_id)
-                store.getters.menu.forEach(item => {
+                const menu =  await store.dispatch('getUserRouter', info.role_id)
+                store.state.layoutStore.breadcrumbList.push(getFirstTabs(menu))
+                menu.forEach(item => {
                     router.addRoute({...item})
                 })
-                next({...to, replace: true})
+                next({name:getFirstTabs(menu).name, replace: true})
             }
         } else {
             next({name: 'login'})
