@@ -31,9 +31,9 @@ router.beforeEach(async (to, form, next) => {
     const timestamp = parseInt(localStorage.getItem('timestamp')) //登录时存的时间戳
     const nowTimeStamp  =new Date().getTime() //当前时间戳
     if (token&&nowTimeStamp<timestamp){
-        if (!store.state.menu.length){
+        if (!store.getters.menu.length){
             await store.dispatch('getUserRouter',token)
-            store.state.menu.forEach(item=>{
+            store.getters.menu.forEach(item=>{
                 router.addRoute({...item})
             })
             next({...to, replace: true })

@@ -9,16 +9,15 @@ const otherSide = {
     },
     computed: {
         isCollapse() {
-            return this.$store.state.isCollapse
+            return this.$store.getters.isCollapse
         },
         getMenu() {
-            return this.$store.state.menu
+            return this.$store.getters.menu
         },
     },
     methods: {
         clickMenu(item) {
             this.$router.push({name: item.name})
-            this.$store.commit('addBreadcrumb', item)
         }
     },
     render() {
