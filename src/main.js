@@ -3,8 +3,8 @@ import App from './App.vue'
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 import  './publicStyle/echartsMap/index.scss'
-import router from '../router/index'
-import store from '../store/index'
+import router from './router'
+import store from './store'
 import {loading,scrollBoard} from '@jiaminghi/data-view'
 import modal from './publicMethod'
 import components from "./components";

@@ -1,14 +1,7 @@
 import axios from "axios";
 
-
-
-
-class HttpRequest {
-    baseUrl=''
-    constructor(baseUrl) {
-        this.baseUrl = baseUrl
-    }
-
+class httpRequest {
+    baseUrl='https://www.fastmock.site/mock/0308fe18ed0841df54558340feb89b5f/vue2-demo'
     interceptors(instance) {
         instance.interceptors.request.use(function(config) {
                 return config;
@@ -33,4 +26,5 @@ class HttpRequest {
         return instance
     }
 }
-export default new HttpRequest('https://www.fastmock.site/mock/0308fe18ed0841df54558340feb89b5f/vue2-demo').request()
+
+export default new httpRequest().request()

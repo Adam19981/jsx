@@ -29,13 +29,16 @@ export default {
   name: 'menuHeader',
   data(){
     return{
-     userName:localStorage.getItem('token')
+
     }
   },
   computed: {
     ...mapState({
       tags: state => state.breadcrumbList
-    })
+    }),
+    userName(){
+      return this.$store.getters.info.name
+    }
   },
 
   methods: {
@@ -47,7 +50,8 @@ export default {
     },
     logout() {
       localStorage.removeItem('token')
-      this.$store.menu = []
+      this.$store.state.userStore.menu = []
+      this.$store.state.userStore.info = []
       this.$router.push({name: 'login'})
     }
   },

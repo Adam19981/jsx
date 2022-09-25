@@ -8,8 +8,8 @@
         <h1>Log In</h1>
         <i class="formClose el-icon-circle-close" @click="handleShowForm"></i>
         <el-form :model="form" :rules='rules' ref='form' @submit.prevent.native>
-          <el-form-item prop="userId">
-            <el-input type="input" v-model="form.userId" clearable placeholder="请输入用戶名"></el-input>
+          <el-form-item prop="account">
+            <el-input type="input" v-model="form.account" clearable placeholder="请输入用戶名"></el-input>
           </el-form-item>
           <el-form-item>
             <el-button class="loginBtn" @click="handleLogin">Log in</el-button>
@@ -35,10 +35,10 @@ export default {
   data() {
     return {
       form: {
-        userId: '',
+        account: '',
       },
       rules: {
-        userId: [{required: true, message: '请输入用户名', trigger: 'blur'},
+        account: [{required: true, message: '请输入用户名', trigger: 'blur'},
           { validator: changeUserId, trigger: 'blur' }]
       },
       isShowUserImg: true
@@ -47,15 +47,11 @@ export default {
 
   methods: {
     handleLogin() {
-      this.$refs['form'].validate((valid) => {
+      this.$refs['form'].validate( async (valid) => {
         console.log(valid)
         if (valid) {
-          const timestamp = new Date().getTime()+60*60*24*1000
-          localStorage.setItem('timestamp',timestamp+'')
-          localStorage.setItem('token', this.form.userId)
-          this.$router.push({path:'/'})
-        } else {
-          console.log('false')
+          await this.$store.dispatch('userLogin',this.form.account)
+          await this.$router.push({path:'/'})
         }
       })
     },
