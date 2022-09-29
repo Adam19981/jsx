@@ -25,8 +25,6 @@ const mainContent = {
                 </el-container>
             </el-container>
         )
-
     }
-
 }
 export default mainContent

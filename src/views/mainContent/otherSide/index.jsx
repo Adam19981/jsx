@@ -1,7 +1,6 @@
 import otherSideStyle from './index.module.scss'
 
 
-
 const otherSide = {
     name: 'otherSide',
     data() {
@@ -18,6 +17,34 @@ const otherSide = {
     methods: {
         clickMenu(item) {
             this.$router.push({name: item.name})
+        },
+        setChildrenMenu(menu){
+            return (
+                <el-submenu index={menu.path} style={{textAlign: 'left'}}>
+                    <template slot='title'>
+                        <i class={menu.meta.icon}/>
+                        <span>{menu.meta.title}</span>
+                    </template>
+                    <el-menu-item-group>
+                        {menu.children.map(item => {
+                            this.setMenu(item)
+                        })}
+                    </el-menu-item-group>
+                </el-submenu>
+            )
+        },
+        setNoChildrenMenu(menu){
+            return (
+                <el-menu-item style={{textAlign: 'left'}} index={menu.path} onClick={() => {
+                    this.clickMenu(menu)
+                }}>
+                    <i class={menu.meta.icon}/>
+                    <span>{menu.meta.title}</span>
+                </el-menu-item>
+            )
+        },
+        setMenu(menu){
+            return menu.meta.hidden ? null : menu.meta.showChildren ? this.setChildrenMenu(menu) : this.setNoChildrenMenu(menu);
         }
     },
     render() {
@@ -28,39 +55,11 @@ const otherSide = {
                      textColor='#fff' activeTextColor='#6495ED'
                      collapse={this.isCollapse}>
                 <h3 class={otherSideStyle.title}>{this.isCollapse ? '后台' : '通用后台管理系统'}</h3>
-                {this.getMenu.map(item => {
-                    if (!item.hidden){
-                        if (item.isShowChildren) {
-                            return <el-submenu  index={item.path} style={{textAlign:'left'}}>
-                                <template slot={'title'}>
-                                    <i class={item.meta.icon}/>
-                                    <span>{item.meta.title}</span>
-                                </template>
-                                <el-menu-item-group>
-                                    {item.children.map(ite => {
-                                        if (!ite.hidden){
-                                            return <el-menu-item index={ite.path} onClick={() => {
-                                                this.clickMenu(ite)}}>
-                                                {ite.meta.title}
-                                            </el-menu-item>
-
-                                        }
-                                    })}
-                                </el-menu-item-group>
-
-                            </el-submenu>
-                        } else {
-                            return <el-menu-item style={{textAlign:'left'}} index={item.path} onClick={() => {
-                                this.clickMenu(item)}}>
-                                <i class={item.meta.icon}/>
-                                <span>{item.meta.title}</span>
-                            </el-menu-item>
-                        }
-                    }
+                {this.getMenu.map(menu => {
+                    return this.setMenu(menu);
                 })}
             </el-menu>
         )
     }
 }
-
 export default otherSide
