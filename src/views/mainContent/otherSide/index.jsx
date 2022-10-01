@@ -27,7 +27,7 @@ const otherSide = {
                     </template>
                     <el-menu-item-group>
                         {menu.children.map(item => {
-                            this.setMenu(item)
+                            return  this.setMenu(item)
                         })}
                     </el-menu-item-group>
                 </el-submenu>

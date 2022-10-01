@@ -1,4 +1,22 @@
-// import { dateFormat } from '@/utils/date'
+export function dateFormat (fmt, date) {
+    let ret
+    const opt = {
+        'Y+': date.getFullYear().toString(), // 年
+        'm+': (date.getMonth() + 1).toString(), // 月
+        'd+': date.getDate().toString(), // 日
+        'H+': date.getHours().toString(), // 时
+        'M+': date.getMinutes().toString(), // 分
+        'S+': date.getSeconds().toString() // 秒
+        // 有其他格式化字符需求可以继续添加，必须转化成字符串
+    }
+    for (const k in opt) {
+        ret = new RegExp('(' + k + ')').exec(fmt)
+        if (ret) {
+            fmt = fmt.replace(ret[1], (ret[1].length === 1) ? (opt[k]) : (opt[k].padStart(ret[1].length, '0')))
+        }
+    }
+    return fmt
+}
 import { Message } from 'element-ui'
 
 export default {
@@ -148,12 +166,12 @@ export default {
      * @param timestamp 单位：秒
      * @returns {string|*}
      */
-    // getLocalDate(format, timestamp) {
-    //     if (timestamp) {
-    //         return dateFormat(format, new Date(parseInt(timestamp) * 1000))
-    //     }
-    //     return '—'
-    // },
+    getLocalDate(format, timestamp) {
+        if (timestamp) {
+            return dateFormat(format, new Date(parseInt(timestamp) * 1000))
+        }
+        return '—'
+    },
     getYearFirstLastDay() { // 获取当年第一天与最后一天时间戳
         const firstDay = new Date((new Date().toLocaleDateString()))
         firstDay.setDate(1)

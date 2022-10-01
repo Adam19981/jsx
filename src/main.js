@@ -6,7 +6,7 @@ import  './publicStyle/echartsMap/index.scss'
 import router from './router'
 import store from './store'
 import {loading,scrollBoard} from '@jiaminghi/data-view'
-import modal from './publicMethod'
+import modal from './utlis'
 import components from "./components";
 import * as echarts from 'echarts';
 Vue.config.productionTip = false

@@ -1,27 +1,24 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import login from '@/views/login/login.vue'
 import store from "@/store";
-
 Vue.use(VueRouter)
-
-const originalPush = VueRouter.prototype.push
-// 修改 原型对象中的push方法
-VueRouter.prototype.push = function push(location) {
-    return originalPush.call(this, location).catch(err => err)
-}
-
 
 export const loginRouter = [{
     path: '/login',
     name: 'login',
-    component: login
+    component: ()=>import('@/views/login/index.vue')
 }]
 
 const router = new VueRouter({
     routes: loginRouter,
     mode: 'history'
 })
+
+const originalPush = VueRouter.prototype.push
+// 修改 原型对象中的push方法
+VueRouter.prototype.push = function push(location) {
+    return originalPush.call(this, location).catch(err => err)
+}
 
 function getFirstTabs(menu){ //获取tabs的默认第一栏
     let  obj = {}

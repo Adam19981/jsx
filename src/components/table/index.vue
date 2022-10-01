@@ -1,168 +1,82 @@
 <template>
   <div>
-    <!--     sort-change 排序未完善 -->
-    <!--
-      v-loading="tableConfig.isShowTableLoading"
-      element-loading-background="rgba(150, 150, 150, 0.2)"
-      element-loading-spinner="el-icon-loading"
-      element-loading-text="加载中"
--->
     <el-table
-        :max-height="tableConfig.maxHeight"
+        :max-height="maxHeight"
         id="table"
         ref="table"
-        v-loading="tableConfig.isShowTableLoading"
+        v-loading="isLoading"
         :data="tableData"
-        :default-expand-all="tableConfig.defaultExpandAll"
-        :lazy="tableConfig.lazy"
-        :load="load"
-        :row-class-name="getRowClass"
-        :expand-row-keys="expandRowKeys"
-        :row-key="tableConfig.rowKey || ''"
-        :show-summary="tableConfig.isShowSummary"
-        :stripe="tableConfig.stripe"
-        :summary-method="getSummaries"
-        :tree-props="{children: 'children', hasChildren: 'hasChildren'}"
+        :default-expand-all="defaultExpandAll"
+        :lazy="lazy"
+        :row-key="rowKey"
+        :show-summary="isShowSummary"
+        :stripe="stripe"
+        :tree-props="treeProps"
         element-loading-background="rgba(196,196,196,0.4)"
         element-loading-spinne=" "
         element-loading-text="加载中"
         size="medium"
         style="width: 100%"
         :header-cell-style="{background:'rgba(0, 0, 0, 0.02)',color:'#606266'}"
-        @expand-change="expandChange"
         @selection-change="handleSelectionChange"
-        @sort-change="sortChange">
+        >
 
-      <!--      多选-->
-      <el-table-column
-          v-if="tableConfig.multiSelect"
-          align="center"
-          fixed="left"
-          type="selection"
-          width="70"
-      ></el-table-column>
-      <slot name="customize"></slot>
+      <div  v-for="(item, index) in tableLabel" :key="index">
 
-      <template v-if="tableConfig.isShowTableLoading" slot="empty">
-        <span style="color: rgba(241,235,235,0.5);"></span>
-      </template>
-      <!--      序号-->
-      <el-table-column
-          v-if="tableConfig.sequence===undefined || tableConfig.sequence"
-          align="center"
-          fixed="left"
-          label="序号"
-          type="index"
-          width="55">
-        <template slot-scope="scope">
-          {{ (curPageNum - 1) * pagination.page_size + scope.$index + 1 }}
-        </template>
-      </el-table-column>
+        <el-table-column
+            v-if="item.type==='index'"
+            align="center"
+            fixed="left"
+            label="序号"
+            type="index"
+            width="55">
+        </el-table-column>
 
-      <!--      数据-->
-      <el-table-column
-          v-for="(item, index) in tableLabel "
-          :key="index"
-          :align="item.align"
-          :fixed="item.fixed"
-          :label="item.label"
-          :prop="getProp(index,item)"
-          :sortable="item.sortable ? 'custom' : false"
-          :style="item.style"
-          :min-width="item.minWidth ? item.minWidth : ''"
-          :width="item.width ? item.width : ''"
-          show-overflow-tooltip
-      >
-        <template slot-scope="scope">
-          <!--          如果是普通数据-->
-          <template v-if="!item.render">
-            <!--            如果传入数组（时间格式数组）-->
-            <!--如果是多层数据-->
+        <el-table-column
+            v-if="item.type==='selection'"
+            align="center"
+            fixed="left"
+            type="selection"
+            width="70"
+        ></el-table-column>
 
-            <span v-if="Array.isArray(item.prop)" :style="item.style">
-              {{ getLocalDateArea(scope.row, item.prop) }}
-            </span>
+        <!--      数据-->
+        <el-table-column
+            :key="index"
+            :align="item.align"
+            :fixed="item.fixed"
+            :label="item.label"
+            :prop="item.prop"
+            :sortable="item.sortable ? 'custom' : false"
+            :style="item.style"
+            :min-width="item.minWidth ? item.minWidth : ''"
+            :width="item.width ? item.width : ''"
+            show-overflow-tooltip
+        >
+          <template v-slot="scope">
+            <!--如果是函数组件-->
+            <component v-if="item.render" :is="item.render(h,scope.row)"></component>
 
-            <!--       如果是单层数据     -->
-            <span v-else :style="item.style">{{
-                scope.row[item.prop] ? scope.row[item.prop] : scope.row[item.prop] === 0 ? 0 : '—'
-              }}</span>
+            <!--时间格式-->
+            <span v-else-if="item.dateFormat">{{$modal.getLocalDate(item.dateFormat,scope.row[item.prop])}}</span>
 
+            <!--普通数据-->
+            <span v-else>{{scope.row[item.prop]}}</span>
           </template>
 
-          <!--如果传入render判断数据-->
-          <template v-else>
-            <!--            <span :style="item.style">-->
-            <!--              {{ build(scope.row, item) }}-->
-            <!--            </span>-->
-            <expandDom :column="item" :index="index" :render="item.render" :row="scope.row"></expandDom>
-          </template>
-        </template>
-        <!--render函数-->
+        </el-table-column>
+      </div>
 
-      </el-table-column>
-      <!--   尾行按钮   -->
-      <el-table-column
-          v-if="tableHandle.label && !isHidden(tableHandle)"
-          :align="tableHandle.align"
-          :fixed="tableHandle.fixed"
-          :label="tableHandle.label"
-          :width="tableHandle.width"
-          class-name="small-padding fixed-width"
-      >
-        <!-- button 事件-->
-        <template slot-scope="scope">
-          <template v-for="(item, thIdx) in tableHandle.optBtn">
-            <span
-                class="noneSelect"
-                v-if="item.type === 'btn' && !isHidden(item)"
-                :key="thIdx+'A'"
-                :disabled="item.disabled"
-                :style="item.style"
-                style="cursor: pointer;"
-                type="text"
-            ><span
-                v-if="permissionBtn(item,scope.row)"
-                style="color:#1890FF"
-                @click="item.method(thIdx, scope.row)">{{ item.label }}</span>
-              <span v-else style="color: #a7a7a7">{{ item.label }}</span>
-            </span>
-            <!--下拉按钮事件-->
-<!--            <div v-if="item.type === 'dropdown' " :key="thIdx" style="display: inline-block">-->
-<!--              <el-dropdown v-if="permissionBtn(item,scope.row)">-->
-<!--                <span :style="item.style" class="el-dropdown-link">{{ item.label }}<i-->
-<!--                    class="el-icon-arrow-down el-icon&#45;&#45;right"></i> </span>-->
-<!--                <el-dropdown-menu slot="dropdown">-->
-<!--                  <el-dropdown-item-->
-<!--                      v-if="permissionBtn(downItem,scope.row)"-->
-<!--                      v-for="(downItem, downIndex) in item.downBtn"-->
-<!--                      :key="downIndex"-->
-<!--                      :style="downItem.style"-->
-<!--                      @click.native.prevent="downItem.method(thIdx, scope.row)">-->
-<!--                    <template>{{ downItem.label }}</template>-->
-<!--                  </el-dropdown-item>-->
-<!--                </el-dropdown-menu>-->
-<!--              </el-dropdown>-->
-
-<!--              <div v-else :key="thIdx" style="display: inline-block;margin-left: 15px">-->
-<!--                <span class="el-dropdown-link" style="color: #a7a7a7">{{ item.label }}<i-->
-<!--                    class="el-icon-arrow-down el-icon&#45;&#45;right"></i> </span>-->
-<!--              </div>-->
-<!--            </div>-->
-
-          </template>
-        </template>
-      </el-table-column>
     </el-table>
 
     <!-- 分页组件-->
     <el-pagination
-        v-if="!tableConfig.isShowPagination"
-        :current-page="curPageNum"
-        :layout="tableConfig.isChangeSize?tableConfig.isChangeSize:'prev, pager, next,total, jumper'"
-        :page-size="pagination.page_size"
+        v-if="isShowPagination"
+        :current-page="pagination.pageNum"
+        :layout="pageLayout"
+        :page-size="pagination.pageSize"
         :page-sizes="[10,15,30]"
-        :total="pageTotal"
+        :total="total"
         background
         class="table-pagination"
         @size-change="handleSizeChange"
@@ -172,356 +86,68 @@
 </template>
 
 <script>
-// import { dateFormat } from '@/utils/date'
-import { Loading } from 'element-ui'
+import h from 'vue'
+import {createProp} from "@/utlis/propsDefault";
 
 export default {
   name:'MTable',
   data() {
-    return {}
+    return {
+      h,
+      tableData:[],
+      isLoading: false,
+      pagination: {
+        pageNum: 1,
+        pageSize: 10,
+      },
+      total: 0,
+      selectList:[],
+      deepCopy:{...this.params}
+    }
   },
   props: {
-    // 配置
-    tableConfig: {
-      type: Object,
-      default: () => ({
-        rowKey: '',
-        rowClass: null,
-        isShowTableLoading: false,
-        lazy: false, // 是否懒加载
-        sequence: false, // 是否显示序号
-        isShowSummary: false, // 是否在表尾显示合计行
-        stripe: false, // 是否为斑马纹 table
-        highlightCurrentRow: false, // 是否要高亮当前行
-        border: false, // 是否带有纵向边框
-        defaultExpandAll: false
-      })
-    },
-
-    // 数据
-    tableData: {
-      type: Array,
-      default: () => {
-        return []
-      }
-    },
-    // 数据标签
-    tableLabel: {
-      type: Array,
-      default: () => {
-        return []
-      }
-    },
-    expandRowKeys: {
-      type: Array,
-      default: () => {
-        return null
-      }
-    },
-    isShowPagination: {
-      type: Boolean,
-      default: true
-    },
-
-    pagination: {
-      type: Object,
-      default: () => {
-        return {
-          isChangeSize: null,
-          page_num: 1,
-          page_size: 5,
-          total: 0
-        }
-      }
-    },
-
-    tableHandle: {
-      type: Object,
-      default: () => {
-        return {}
-      }
-    }
-
+    maxHeight:createProp.createNumber(),//最大高度
+    defaultExpandAll:createProp.createBoolean(),//是否展开全部
+    rowKey:createProp.createString(),//唯一标识
+    lazy:createProp.createBoolean(),// 是否懒加载
+    isShowSummary:createProp.createBoolean(), // 是否在表尾显示合计行
+    stripe:createProp.createBoolean(),// 是否为斑马纹 table
+    highlightCurrentRow:createProp.createBoolean(),// 是否要高亮当前行
+    border: createProp.createBoolean(), // 是否带有纵向边框
+    tableLabel:createProp.createArray(),    // 列数据
+    isShowPagination: createProp.createBoolean(true), //是否展示分页器
+    pageLayout: createProp.createString('prev, pager, next,total, jumper'),//分页器配置
+    treeProps:createProp.createObject({children: 'children', hasChildren: 'hasChildren'}),//树结构的配置
+    params:createProp.createObject(), //请求接口参数
+    requestApi:createProp.createFunction(), //请求接口
   },
-  components: {
-    /**
-     * render函数渲染组件
-     * */
-    expandDom: {
-      functional: true,
-      props: {
-        row: Object,
-        render: Function,
-        index: Number,
-        column: {
-          type: Object,
-          default: null
-        }
-      },
-      render: (h, ctx) => {
-        const params = {
-          row: ctx.props.row,
-          index: ctx.props.index
-        }
-        if (ctx.props.column) params.column = ctx.props.column
-        return ctx.props.render(h, params)
-      }
-    }
-  },
-  watch: {},
-  computed: {
-    curPageNum() {
-      return this.pagination.page_num ? this.pagination.page_num : 1
-    },
-    pageTotal() {
-      return this.pagination.total ? this.pagination.total : 0
-    }
-  },
+  components: {},
   mounted() {
+    this.getQuery()
   },
   methods: {
-    load(tree, treeNode, resolve) {
-      this.$emit('loader', { tree, treeNode, resolve })
-    },
-    loadingStyle() {
-      this.loading && this.loading.close() // 这里是为了防止还没有请求结束（loading未关闭）再次连续触发
-      // Loading.service(options); 是直接调用了
-      this.loading = Loading.service({
-        // background: 'rgba(196,196,196,0.4)', // 背景色
-        // spinner: ' ', // 加载图标
-        // 可以直接使用选择器名称，当然也可以用ref获取DOM结构，可以提前把DOM结构缓存起来，
-        // 这样频繁被触发的时候是不是就不会重新获取DOM了呢？好像可以提升一丢丢性能吧（个人理解）
-        target: document.querySelector('.el-table__body-wrapper') // loading需要覆盖的DOM节点，默认为body
-        // lock: true, //锁定屏幕的滚动
-        // text: '拼命加载中' // 加载文案
-        //
-      })
-    },
-    isHidden(item) {
-      if (typeof (item.isHidden) !== 'function') {
-        return false
-      }
-      return item.isHidden()
-    },
-    /**
-     * 判断是否为数组，否则为string，number,boolean
-     * @param btnItem 按钮列表
-     * @param tableRow 表格当行数据
-     * @returns {boolean}
-     */
-    permissionBtn(btnItem, tableRow) {
-      // console.log(btnItem.permissionConfig)
-      let result = true
-      for (const permissionConfigKey in btnItem.permissionConfig) {
-        const permissionData = btnItem.permissionConfig[permissionConfigKey]
-        if (permissionData) {
-          if (Array.isArray(permissionData)) {
-            if (permissionData.indexOf(tableRow[permissionConfigKey]) === -1) {
-              result = false
-              break
-            }
-          } else if (typeof permissionData === 'string' || typeof permissionData === 'number' || typeof permissionData === 'boolean') {
-            console.log(tableRow)
-            console.log(permissionConfigKey)
-            console.log(tableRow[permissionConfigKey])
-
-            if (tableRow[permissionConfigKey].toString() !== btnItem.permissionConfig[permissionConfigKey].toString()) {
-              result = false
-              break
-            }
-          } else {
-            console.log(btnItem.permissionConfig)
-          }
-        }
-      }
-      if (btnItem.permissionReverse) {
-        return !result
-      }
-      return result
-    },
-
-    // 获取prop参数
-    getProp(index, item) {
-      if (!item.prop) {
-        return ''
-      }
-      if (typeof item.prop === 'string') {
-        return item.prop
-      } else if (item.prop[0] === 'stitchingDataList') {
-        return item.prop[1]
-      } else if (item.prop[0] === 'time') {
-        if (item.prop[0] === 'time') {
-          if (item.prop.length === 3) {
-            return item.prop[item.prop.length - 1]
-          }
-        }
-      }
-    },
-// 判断是否需要展示下拉按钮
-    filterBtn(item, row) {
-      let condition
-      let display
-      if (item.condition.length === 0 && item.display.length === 0) {
-        return true
-      } else {
-        for (let i = 0; i < item.condition.length; i++) {
-          condition = item.condition[i]
-
-          for (let j = 0; j < item.display.length; j++) {
-            display = item.display[j]
-
-            if (display === row[condition]) {
-              return display === row[condition]
-            }
-          }
-        }
-      }
-    },
-    filDrop(downItem, item, thIdx, row) {
-      // 操作下拉框权限
-      if (downItem.optAllow.length === 0) {
-        return downItem.label
-      } else {
-        for (var s = 0; s < downItem.optAllow.length; s++) {
-          if (downItem.optAllow[s] === row.status) {
-            return downItem.label
-          }
-        }
-      }
-    },
-    // 判断表格是否有子项，无子项不显示展开按钮
-    getRowClass(row) {
-      // children 是你子项的数组 key
-      if (this.tableConfig.rowClass && row.row[this.tableConfig.rowClass].length === 0) {
-        return 'row-expand-cover'
-      }
-    },
-    // 合计算法
-    getSummaries(val) {
-      let data = []
-      this.$emit('getSummaries', val, sss => {
-        data = sss
-      })
-      return data
-    },
     // 多行选中
     handleSelectionChange(val) {
-      this.$emit('handleSelectionChange', val)
+      this.selectList = val
     },
     // 分页
     handleSizeChange(val) {
-      // console.log(`每页 ${val} 条`)
-      this.$emit('handleSizeChange', Number(val))
+      this.pagination.pageSize = val
+      this.getQuery()
     },
-    // 当表格的当前行发生变化的时候会触发该事件
+    // 当表格的当前页发生变化的时候会触发该事件
     handleCurrentChange(val) {
-      // console.log(`当前页: ${val}`)
-      this.$emit('handleCurrentChange', Number(val))
+      this.pagination.pageNum = val
+      this.getQuery()
     },
-    // 展开行
-    expandChange(row, expandedRows) {
-      this.$emit('expandChange', { row, expandedRows })
-    },
-    // 当表格的排序条件发生变化的时候会触发该事件
-    sortChange(column) {
-      this.$emit('sortChange', column)
-    },
-    closeSortChange() {
-      this.$refs.table.clearSort()
-    },
-
-    /****
-     * 获取时间 time
-     * @param row   数据
-     * @param item   传入的字段
-     * @returns {string|*}
-     * item：1、格式；2、开始时间；3、结束时间；4、时间连接符号
-     * prop: ['time', 'YYYY-mm-dd', 'start_at'],
-     * prop: ['time', 'YYYY/mm/dd', 'start_at', 'end_at', '-'],
-     *
-     * 获取对象 obj
-     * @param row   数据
-     * @param item   传入的字段
-     * @returns {string|*}
-     * prop: ['obj', 'ys_company', 'name'],
-     *
-     *  拼接数据 1 ： stitchingData
-     *  prop: ['stitchingData', 'related_driver', 'name'],
-
-     *
-     *  拼接数据 2 ： stitchingDataList
-     *  prop: ['stitchingDataList', 'measures'],
-     */
-    getLocalDateArea(row, item) {
-      // 判断是否传入结束时间
-      if (item[0] === 'time') {
-        if (item.length === 3) {
-          if (row[item[2]] === 0 || row[item[2]] === null || row[item[2]] === undefined) {
-            // 当日期时间戳为0
-            return '—'
-          } else {
-            // 输出当个时间格式
-            return this.getLocalDate(item[1], row[item[2]])
-          }
-        } else if (row[item[2]] === 0 || row[item[2]] === null || row[item[2]] === undefined || row[item[3]] === 0 || row[item[3]] === null || row[item[3]] === undefined) {
-          // 当日期范围时间戳为0
-          return '—'
-        } else {
-          // 输出日期范围
-          return this.getLocalDate(item[1], row[item[2]]) + item[4] + this.getLocalDate(item[1], row[item[3]])
-        }
-      } else if (item[0] === 'obj') {
-        // 多层数据
-        let res = row[item[1]]
-        for (let index = 2; index < item.length; index++) {
-          // 当设置字段无
-          if (res === undefined || res === null) {
-            return '—'
-          } else {
-            // 拼接层数
-            res = res[item[index]]
-          }
-        }
-        // 当输出字段为空或无
-        if (res === '' || res === undefined || res === null) {
-          return '—'
-        } else {
-          return res
-        }
-      } else if (item[0] === 'stitchingData') {
-        // stitchingData
-        // 拼接数据
-        const stitchingList = row[item[1]]
-        let stitchingDataStr
-        for (let sd = 0; sd < stitchingList.length; sd++) {
-          stitchingDataStr = stitchingList.map(p => p[item[2]]).join(';')
-        }
-        if (stitchingDataStr === '' || stitchingDataStr === undefined || stitchingDataStr === null) {
-          return '—'
-        } else {
-          return stitchingDataStr
-        }
-      } else if (item[0] === 'stitchingDataList') {
-        // stitchingDataList
-        // 拼接数据
-        const stitchingList = row[item[1]]
-        let stitchingDataStr = ''
-        for (let sd = 0; sd < stitchingList.length; sd++) {
-          stitchingDataStr = stitchingDataStr + stitchingList[sd] + ';'
-        }
-        if (stitchingDataStr === '' || stitchingDataStr === undefined || stitchingDataStr === null) {
-          return '—'
-        } else {
-          return stitchingDataStr
-        }
-      }
-    },
-    // getLocalDate(format, timestamp) {
-    //   if (timestamp) {
-    //     return dateFormat(format, new Date(parseInt(timestamp) * 1000))
-    //   }
-    //   return '—'
-    // }
+    async getQuery() {
+      const allParams =  Object.assign({},this.params,this.pagination)
+      this.isLoading = true
+      const response =  await this.requestApi(allParams)
+      this.isLoading = false
+      this.tableData = response.data
+      this.total = response.total
+    }
   }
 }
 </script>
