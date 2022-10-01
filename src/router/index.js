@@ -24,8 +24,7 @@ function getFirstTabs(menu){ //获取tabs的默认第一栏
     let  obj = {}
     for (let i = 0 ; i<menu.length ; i++){
         if (!menu[i].hidden){
-            obj['name'] = menu[i].name
-            obj['label'] = menu[i].meta.title
+            obj = menu[i]
             break
         }
     }
@@ -48,7 +47,7 @@ router.beforeEach(async (to, form, next) => {
                 menu.forEach(item => {
                     router.addRoute({...item})
                 })
-                next({name:getFirstTabs(menu).name, replace: true})
+                next({...to, replace: true})
             }
         } else {
             next({name: 'login'})

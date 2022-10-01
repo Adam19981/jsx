@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="tableMain">
     <el-table
         :max-height="maxHeight"
         id="table"
@@ -12,60 +12,59 @@
         :show-summary="isShowSummary"
         :stripe="stripe"
         :tree-props="treeProps"
-        element-loading-background="rgba(196,196,196,0.4)"
+        element-loading-background="rgba(196,196,196,0.2)"
         element-loading-spinne=" "
         element-loading-text="加载中"
         size="medium"
-        style="width: 100%"
+        :style="{width:'100%',height:maxHeight+'px',  transition:' 0.5s'}"
         :header-cell-style="{background:'rgba(0, 0, 0, 0.02)',color:'#606266'}"
         @selection-change="handleSelectionChange"
-        >
+    >
 
-      <div  v-for="(item, index) in tableLabel" :key="index">
+      <el-table-column
+          v-if="columnSelection"
+          align="center"
+          fixed="left"
+          type="selection"
+          width="70"
+      ></el-table-column>
 
-        <el-table-column
-            v-if="item.type==='index'"
-            align="center"
-            fixed="left"
-            label="序号"
-            type="index"
-            width="55">
-        </el-table-column>
+      <el-table-column
+          v-if="columnIndex"
+          align="center"
+          fixed="left"
+          label="序号"
+          type="index"
+          width="55">
+      </el-table-column>
 
-        <el-table-column
-            v-if="item.type==='selection'"
-            align="center"
-            fixed="left"
-            type="selection"
-            width="70"
-        ></el-table-column>
-
-        <!--      数据-->
-        <el-table-column
-            :key="index"
-            :align="item.align"
-            :fixed="item.fixed"
-            :label="item.label"
-            :prop="item.prop"
-            :sortable="item.sortable ? 'custom' : false"
-            :style="item.style"
-            :min-width="item.minWidth ? item.minWidth : ''"
-            :width="item.width ? item.width : ''"
-            show-overflow-tooltip
-        >
-          <template v-slot="scope">
+      <!--      数据-->
+      <el-table-column
+          v-for="(item, index) in tableLabel"
+          :key="index"
+          :align="item.align"
+          :fixed="item.fixed"
+          :label="item.label"
+          :prop="item.prop"
+          :sortable="item.sortable ? 'custom' : false"
+          :style="item.style"
+          :min-width="item.minWidth ? item.minWidth : ''"
+          :width="item.width ? item.width : ''"
+          show-overflow-tooltip
+          v-slot="scope"
+      >
+        <slot :name="item.prop" :row="scope.row">
             <!--如果是函数组件-->
-            <component v-if="item.render" :is="item.render(h,scope.row)"></component>
+            <functionComponent v-if="item.render" :params="scope.row" :render="item.render"></functionComponent>
 
             <!--时间格式-->
-            <span v-else-if="item.dateFormat">{{$modal.getLocalDate(item.dateFormat,scope.row[item.prop])}}</span>
+            <span v-else-if="item.dateFormat">{{ $modal.getLocalDate(item.dateFormat, scope.row[item.prop]) }}</span>
 
             <!--普通数据-->
-            <span v-else>{{scope.row[item.prop]}}</span>
-          </template>
+            <span v-else>{{ scope.row[item.prop] ? scope.row[item.prop] : '—' }}</span>
+        </slot>
 
-        </el-table-column>
-      </div>
+      </el-table-column>
 
     </el-table>
 
@@ -86,42 +85,52 @@
 </template>
 
 <script>
-import h from 'vue'
 import {createProp} from "@/utlis/propsDefault";
-
 export default {
-  name:'MTable',
+  name: 'MTable',
   data() {
     return {
-      h,
-      tableData:[],
+      tableData: [{number: 1}],
       isLoading: false,
       pagination: {
         pageNum: 1,
         pageSize: 10,
       },
       total: 0,
-      selectList:[],
-      deepCopy:{...this.params}
+      selectList: [],
+      deepCopy: {...this.params}
     }
   },
   props: {
-    maxHeight:createProp.createNumber(),//最大高度
-    defaultExpandAll:createProp.createBoolean(),//是否展开全部
-    rowKey:createProp.createString(),//唯一标识
-    lazy:createProp.createBoolean(),// 是否懒加载
-    isShowSummary:createProp.createBoolean(), // 是否在表尾显示合计行
-    stripe:createProp.createBoolean(),// 是否为斑马纹 table
-    highlightCurrentRow:createProp.createBoolean(),// 是否要高亮当前行
+    maxHeight: createProp.createNumber(500),//最大高度
+    defaultExpandAll: createProp.createBoolean(),//是否展开全部
+    rowKey: createProp.createString(),//唯一标识
+    lazy: createProp.createBoolean(),// 是否懒加载
+    isShowSummary: createProp.createBoolean(), // 是否在表尾显示合计行
+    stripe: createProp.createBoolean(),// 是否为斑马纹 table
+    highlightCurrentRow: createProp.createBoolean(),// 是否要高亮当前行
     border: createProp.createBoolean(), // 是否带有纵向边框
-    tableLabel:createProp.createArray(),    // 列数据
+    tableLabel: createProp.createArray(),    // 列数据
     isShowPagination: createProp.createBoolean(true), //是否展示分页器
     pageLayout: createProp.createString('prev, pager, next,total, jumper'),//分页器配置
-    treeProps:createProp.createObject({children: 'children', hasChildren: 'hasChildren'}),//树结构的配置
-    params:createProp.createObject(), //请求接口参数
-    requestApi:createProp.createFunction(), //请求接口
+    treeProps: createProp.createObject({children: 'children', hasChildren: 'hasChildren'}),//树结构的配置
+    params: createProp.createObject(), //请求接口参数
+    requestApi: createProp.createFunction(), //请求接口
+    columnSelection: createProp.createBoolean(),
+    columnIndex: createProp.createBoolean(true)
   },
-  components: {},
+  components: {
+    functionComponent:{
+      functional:true,
+      props:{
+        params:createProp.createObject(),
+        render:createProp.createFunction()
+      },
+      render(h,context) {
+        return  context.props.render(h,context.props.params)
+      }
+    }
+  },
   mounted() {
     this.getQuery()
   },
@@ -141,12 +150,12 @@ export default {
       this.getQuery()
     },
     async getQuery() {
-      const allParams =  Object.assign({},this.params,this.pagination)
+      const allParams = Object.assign({}, this.params, this.pagination)
       this.isLoading = true
-      const response =  await this.requestApi(allParams)
+      const {data} = await this.requestApi(allParams)
       this.isLoading = false
-      this.tableData = response.data
-      this.total = response.total
+      this.tableData = data.list
+      this.total = data.total
     }
   }
 }
@@ -154,15 +163,16 @@ export default {
 
 <style lang='less' scoped>
 
+
+.tableMain{
+  background: #fff;
+  padding-bottom: 10px;
+}
 .table-pagination {
   margin-top: 20px;
   text-align: center;
 }
 
-/* 单行table颜色*/
-.el-table .select-color {
-  background: #f0f1f9;
-}
 
 /deep/ .el-table:before {
   height: 0;

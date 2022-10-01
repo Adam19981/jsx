@@ -15,8 +15,9 @@ const otherSide = {
         },
     },
     methods: {
-        clickMenu(item) {
-            this.$router.push({name: item.name})
+        clickMenu(menu) {
+            this.$router.push({name: menu.name})
+            this.$store.commit('addBreadcrumb',menu)
         },
         setChildrenMenu(menu){
             return (

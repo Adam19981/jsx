@@ -1,14 +1,14 @@
 <template>
   <div style="margin-bottom: 20px">
     <el-tag
-        style="cursor: pointer"
+        style="cursor: pointer;margin-right: 10px"
         v-for="(tag,index) in tags"
         :key="tag.name"
         size="small"
         :closable="index!==0"
         @click="handleClick(tag)"
-        @close="handleClose(tag,index)">
-      {{ tag.label }}
+        @close="handleClose(index)">
+      {{ tag.meta.title }}
     </el-tag>
   </div>
 </template>
@@ -25,7 +25,8 @@ export default {
     handleClick(tag) {
       this.$router.push({name: tag.name})
     },
-    handleClose() {
+    handleClose(index) {
+      this.$store.commit('closeBreadcrumb',index)
     }
     //   const length = this.tags.length-1
     //   if(length === index&&this.tags.length!==1){

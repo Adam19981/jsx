@@ -1,3 +1,5 @@
+import router from "@/router";
+
 export default {
     state:{
         breadcrumbList: [],
@@ -16,15 +18,12 @@ export default {
             if (result === -1) {
                 state.breadcrumbList.push(val)
             }
-
         },
         //关闭面包屑
-        closeBreadcrumb(state, val) {
-            const result = state.breadcrumbList.findIndex((item) => {
-                return item.name === val.name
-            })
-            state.breadcrumbList.splice(result, 1)
-
+        closeBreadcrumb(state,index) {
+            state.breadcrumbList.splice(index, 1)
+            const menu = state.breadcrumbList[index]||state.breadcrumbList[index-1]
+            router.push({name:menu.name})
         },
     }
 }

@@ -152,11 +152,12 @@ export default {
      * @returns {(function(*): void)|*}
      */
     debounceFun(fun, delay) {
-        var timeout = null
+        let timeout = null
         return function () {
             clearTimeout(timeout)
             timeout = setTimeout(() => {
-                fun.apply(this, arguments)
+                fun()
+                // fun.apply(this, arguments)
             }, delay)
         }
     },
