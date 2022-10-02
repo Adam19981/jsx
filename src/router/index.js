@@ -20,6 +20,7 @@ VueRouter.prototype.push = function push(location) {
     return originalPush.call(this, location).catch(err => err)
 }
 
+
 function getFirstTabs(menu){ //获取tabs的默认第一栏
     let  obj = {}
     for (let i = 0 ; i<menu.length ; i++){
@@ -43,7 +44,7 @@ router.beforeEach(async (to, form, next) => {
             } else {
                 const info = await store.dispatch('getUserInfo', token)
                 const menu =  await store.dispatch('getUserRouter', info.role_id)
-                store.state.layoutStore.breadcrumbList.push(getFirstTabs(menu))
+                store.state.layoutStore.breadcrumbList=[getFirstTabs(menu)]
                 menu.forEach(item => {
                     router.addRoute({...item})
                 })
