@@ -96,9 +96,20 @@
             >
           {{checkbox.name}}
         </el-checkbox>
-
-
       </el-checkbox-group>
+
+      <el-cascader
+          v-model="item.prop"
+          :options="item.enum"
+          :props="item.props"
+          :placeholder="'请选择'+item.label"
+          :disabled="item.disabled"
+          :clearable="item.clearable"
+          :separator="item.separator"
+          :filterable="item.filterable"
+      >
+
+      </el-cascader>
 
     </el-form-item>
   </el-form>
