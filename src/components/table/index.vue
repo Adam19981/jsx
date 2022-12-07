@@ -75,7 +75,7 @@ export default {
 	name: "MTable",
 	data() {
 		return {
-			tableData: [{ number: 1 }],
+			tableData: [],
 			isLoading: false,
 			pagination: {
 				pageNum: 1,
@@ -139,8 +139,8 @@ export default {
 			this.isLoading = true;
 			const { data } = await this.requestApi(allParams);
 			this.isLoading = false;
-			this.tableData = data.list;
-			this.total = data.total;
+			this.tableData = data.data.list;
+			this.total = data.data.total;
 		}
 	}
 };
@@ -157,24 +157,24 @@ export default {
 	text-align: center;
 }
 
-/deep/ .el-table:before {
+::v-deep .el-table:before {
 	height: 0;
 }
 
-/deep/ .el-loading-spinner .circular {
+::v-deep .el-loading-spinner .circular {
 	width: 0;
 }
 
-/deep/ .customer-table .el-table__fixed-right:before,
-/deep/ .el-table__fixed:before {
+::v-deep .customer-table .el-table__fixed-right:before,
+::v-deep .el-table__fixed:before {
 	width: 0;
 }
 
-/deep/ .el-table .row-expand-cover .cell .el-table__expand-icon {
+::v-deep .el-table .row-expand-cover .cell .el-table__expand-icon {
 	display: none;
 }
 
-/deep/ .el-loading-spinner {
+::v-deep .el-loading-spinner {
 	width: 50px;
 	height: 50px;
 	margin: auto;
@@ -185,7 +185,7 @@ export default {
 	bottom: 0;
 }
 
-/deep/ .el-loading-spinner:before {
+::v-deep .el-loading-spinner:before {
 	content: "";
 	width: 50px;
 	height: 5px;
@@ -198,7 +198,7 @@ export default {
 	animation: shadow 0.5s linear infinite;
 }
 
-/deep/ .el-loading-spinner:after {
+::v-deep .el-loading-spinner:after {
 	content: "";
 	width: 50px;
 	height: 50px;
@@ -239,15 +239,15 @@ export default {
 	}
 }
 
-/deep/ .el-loading-text {
+::v-deep .el-loading-text {
 	margin-top: 30px;
 	width: 5em;
 	transform: translateX(-15%);
 }
 
-/deep/ .el-table__header,
-/deep/ .el-table__body,
-/deep/ .el-table__footer {
+::v-deep .el-table__header,
+::v-deep .el-table__body,
+::v-deep .el-table__footer {
 	width: 100% !important;
 	table-layout: fixed !important;
 
@@ -256,7 +256,7 @@ export default {
 	}
 }
 
-/deep/ .el-table--scrollable-x .el-table__body-wrapper {
+::v-deep .el-table--scrollable-x .el-table__body-wrapper {
 	z-index: 1;
 }
 </style>

@@ -1,7 +1,7 @@
 <template>
 	<el-dialog
 		:title="title"
-		:visible="dialogVisible"
+		:visible="value"
 		:modal="modal"
 		:modal-append-to-body="modalAppendToBody"
 		:close-on-click-modal="closeOnClickModal"
@@ -12,7 +12,7 @@
 	>
 		<slot name="default"></slot>
 		<slot name="footer" class="dialog-footer" v-if="isShowFooter">
-			<el-button @click="handleClose">{{ closeText }}</el-button>
+			<el-button @click="handleBeforeClose">{{ closeText }}</el-button>
 			<el-button type="primary" @click="handleSubmit">{{ submitText }}</el-button>
 		</slot>
 	</el-dialog>
@@ -34,15 +34,14 @@ export default {
 		showClose: createProp.createBoolean(true), //是否显示关闭按钮
 		handleSubmit: createProp.createFunction(), //确认按钮方法
 		submitText: createProp.createString("确认"),
-		closeText: createProp.createString("取消")
+		closeText: createProp.createString("取消"),
+		value: createProp.createBoolean(false)
 	},
 	data() {
-		return {
-			dialogVisible: false
-		};
+		return {};
 	},
 	methods: {
-		handleBeforeClose(done) {
+		handleBeforeClose() {
 			if (this.isShowFooter) {
 				this.$confirm("此操作将不会保存内容, 是否继续?", "提示", {
 					confirmButtonText: "确定",
@@ -50,7 +49,7 @@ export default {
 					type: "warning"
 				})
 					.then(() => {
-						done();
+						this.handleClose();
 					})
 					.catch(() => {
 						this.$message({
@@ -59,14 +58,11 @@ export default {
 						});
 					});
 			} else {
-				done();
 			}
 		},
+
 		handleClose() {
-			this.dialogVisible = false;
-		},
-		handleOpen() {
-			this.dialogVisible = true;
+			this.$emit("input", false);
 		}
 	}
 };

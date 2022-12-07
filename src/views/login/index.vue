@@ -90,17 +90,17 @@ export default {
 		color: rgba(0, 0, 0, 0.3);
 	}
 
-	/deep/ .el-input__inner {
+	::v-deep .el-input__inner {
 		background-color: rgba(0, 0, 0, 0.12);
 		border: none;
 		color: #fff;
 	}
 
-	/deep/ .el-input__inner:hover {
+	::v-deep .el-input__inner:hover {
 		box-shadow: 0 0 4px rgba(0, 0, 0, 1);
 	}
 
-	/deep/ .el-form-item__error {
+	::v-deep .el-form-item__error {
 		color: #eee;
 	}
 
