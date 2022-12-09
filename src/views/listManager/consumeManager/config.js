@@ -19,7 +19,8 @@ export default [
 		prop: "createdAt",
 		align: "center",
 		fixed: "right",
-		width: 150
+		dateFormat: "YYYY-mm-dd HH:MM:SS",
+		width: 300
 	},
 	{
 		label: "操作",
